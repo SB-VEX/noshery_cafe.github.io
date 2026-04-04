@@ -1,568 +1,1319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Noshery — Isleworth</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --black: #0a0a0a;
-      --off-black: #111111;
-      --dark: #1a1a1a;
-      --mid: #3a3a3a;
-      --subtle: #6e6e73;
-      --border: rgba(255,255,255,0.08);
-      --white: #ffffff;
-      --off-white: #f5f5f7;
-      --amber: #d4862a;
-      --amber-glow: rgba(212,134,42,0.15);
-    }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Figtree', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Noshery – Isleworth's Favourite Café</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem;
-      background: rgba(10,10,10,0.75);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.4s;
-    }
-    .nav-logo {
-      font-family: 'Instrument Serif', serif;
-      font-size: 1.15rem; color: var(--white);
-    }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
-    .nav-links a {
-      text-decoration: none; color: rgba(255,255,255,0.65);
-      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.02em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--white); }
-    .nav-cta {
-      background: var(--white) !important; color: var(--black) !important;
-      padding: 0.38rem 1rem; border-radius: 980px;
-      font-weight: 500 !important;
-    }
-    .nav-cta:hover { opacity: 0.85; }
+<style>
+/* ═══════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 120px 2rem 80px;
-      position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 55% at 50% 65%, rgba(212,134,42,0.11) 0%, transparent 70%),
-        var(--black);
-    }
-    .hero-content { position: relative; z-index: 2; max-width: 800px; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 980px; padding: 0.3rem 0.9rem;
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); margin-bottom: 2rem;
-      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both;
-    }
-    .eyebrow-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--amber);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
-    .hero h1 {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(3.5rem, 9vw, 7.5rem);
-      line-height: 1.02; letter-spacing: -0.025em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.1s both;
-    }
-    .hero h1 em { font-style: italic; color: var(--amber); }
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 300;
-      color: rgba(255,255,255,0.5); line-height: 1.65;
-      max-width: 500px; margin: 0 auto 2.5rem;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
-    }
-    .hero-btns {
-      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.3s both;
-    }
-    .btn-white {
-      background: var(--white); color: var(--black);
-      padding: 0.78rem 1.8rem; border-radius: 980px; border: none;
-      font-family: 'Figtree', sans-serif; font-size: 0.88rem; font-weight: 500;
-      text-decoration: none; display: inline-block;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .btn-white:hover { opacity: 0.86; transform: scale(0.98); }
-    .btn-outline {
-      background: transparent; color: var(--white);
-      padding: 0.78rem 1.8rem; border-radius: 980px;
-      border: 1px solid rgba(255,255,255,0.22);
-      font-family: 'Figtree', sans-serif; font-size: 0.88rem; font-weight: 400;
-      text-decoration: none; display: inline-block;
-      transition: background 0.2s, border-color 0.2s, transform 0.15s;
-    }
-    .btn-outline:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); transform: scale(0.98); }
-    .hero-rating {
-      margin-top: 3rem; font-size: 0.78rem; color: rgba(255,255,255,0.35);
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.4s both;
-    }
-    .stars { color: var(--amber); }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+:root {
+  --black:    #0a0a0a;
+  --dark:     #111111;
+  --surface:  #181818;
+  --border:   rgba(255,255,255,0.08);
+  --amber:    #E8950A;
+  --amber-2:  #F5B234;
+  --cream:    #F5ECD7;
+  --cream-dim:#C8B898;
+  --white:    #FFFFFF;
+  --radius:   16px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Outfit', sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-    /* TICKER */
-    .ticker {
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      padding: 0.85rem 0; overflow: hidden; background: var(--off-black);
-    }
-    .ticker-inner {
-      display: flex; gap: 3rem; white-space: nowrap;
-      animation: ticker 24s linear infinite;
-      font-size: 0.72rem; font-weight: 400;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-    }
-    .tdot { color: var(--amber); }
-    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-    /* SHARED */
-    section { padding: 7rem 2rem; }
-    .container { max-width: 1060px; margin: 0 auto; }
-    .label {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--amber); margin-bottom: 1rem;
-      display: block;
-    }
-    .sec-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      line-height: 1.07; letter-spacing: -0.02em; margin-bottom: 1.2rem;
-    }
-    .sec-body {
-      font-size: 1rem; line-height: 1.8;
-      color: rgba(255,255,255,0.45); max-width: 480px;
-    }
+img { display:block; max-width:100%; }
+a  { text-decoration:none; color:inherit; }
 
-    /* ABOUT */
-    .about-sec { background: var(--off-black); }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 5rem; align-items: center;
-    }
-    .about-visual {
-      aspect-ratio: 1; border-radius: 24px;
-      background: radial-gradient(ellipse at 40% 30%, rgba(212,134,42,0.18) 0%, transparent 65%), var(--dark);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 6rem; position: relative; overflow: hidden;
-    }
-    .about-visual::after {
-      content:''; position:absolute; inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
-    }
-    .stats-row {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 1px; margin-top: 2.5rem;
-      background: var(--border); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden;
-    }
-    .stat { background: var(--dark); padding: 1.4rem; text-align: center; }
-    .stat-n {
-      font-family: 'Instrument Serif', serif; font-size: 1.9rem;
-      color: var(--white); display: block;
-    }
-    .stat-l { font-size: 0.68rem; color: var(--subtle); margin-top: 0.2rem; }
+/* ═══════════════════════════════════════
+   SCROLL REVEAL SYSTEM
+═══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
 
-    /* MENU */
-    .menu-sec { background: var(--black); }
-    .menu-tabs {
-      display: flex; gap: 0.4rem; flex-wrap: wrap;
-      margin: 2rem 0 2.5rem;
-    }
-    .tab {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.45);
-      padding: 0.42rem 1.05rem; border-radius: 980px;
-      font-family: 'Figtree', sans-serif; font-size: 0.78rem; font-weight: 400;
-      cursor: pointer; transition: all 0.18s;
-    }
-    .tab.active, .tab:hover {
-      background: var(--white); color: var(--black);
-      border-color: var(--white); font-weight: 500;
-    }
-    .menu-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
-    }
-    .menu-item {
-      background: var(--off-black); padding: 1.5rem 1.7rem;
-      display: flex; justify-content: space-between; align-items: flex-start;
-      gap: 1rem; transition: background 0.18s;
-    }
-    .menu-item:hover { background: var(--dark); }
-    .item-icon { font-size: 1.3rem; margin-bottom: 0.5rem; display: block; }
-    .item-name { font-size: 0.9rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; line-height: 1.3; }
-    .item-desc { font-size: 0.75rem; color: var(--subtle); line-height: 1.5; }
-    .item-price {
-      font-family: 'Instrument Serif', serif; font-size: 1.05rem;
-      color: var(--amber); flex-shrink: 0; white-space: nowrap;
-    }
-    .menu-note { text-align: center; margin-top: 1.2rem; font-size: 0.72rem; color: var(--subtle); }
+/* ═══════════════════════════════════════
+   NAV — Apple-style frosted glass
+═══════════════════════════════════════ */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:999;
+  padding: 0 5vw;
+  height: 64px;
+  display: flex; align-items:center; justify-content:space-between;
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  background: rgba(10,10,10,0.75);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.nav-logo span { color: var(--amber); }
+.nav-links {
+  display: flex; gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.6);
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-order {
+  display: flex; align-items:center; gap: 0.5rem;
+  background: var(--amber);
+  color: var(--black) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  transition: background 0.25s, transform 0.2s !important;
+}
+.nav-order:hover {
+  background: var(--amber-2) !important;
+  color: var(--black) !important;
+  transform: translateY(-1px) !important;
+}
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+.hamburger span {
+  display:block; width:22px; height:2px;
+  background:var(--white); border-radius:2px;
+  transition: all 0.3s;
+}
 
-    /* HOURS/LOC */
-    .visit-sec { background: var(--off-black); }
-    .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
-    .info-card {
-      background: var(--dark); border: 1px solid var(--border);
-      border-radius: 20px; padding: 2.2rem;
-    }
-    .info-card h3 {
-      font-family: 'Instrument Serif', serif; font-size: 1.35rem;
-      margin-bottom: 1.6rem; color: var(--white);
-    }
-    .hr-row {
-      display: flex; justify-content: space-between;
-      padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem;
-    }
-    .hr-row:last-child { border-bottom: none; }
-    .hr-day { color: rgba(255,255,255,0.45); }
-    .hr-time { color: var(--white); font-weight: 500; }
-    .loc-row {
-      display: flex; gap: 0.85rem; align-items: flex-start;
-      margin-bottom: 1.1rem; font-size: 0.85rem;
-      color: rgba(255,255,255,0.45); line-height: 1.6;
-    }
-    .loc-row a { color: var(--amber); text-decoration: none; }
-    .loc-row a:hover { text-decoration: underline; }
-    .map-btn {
-      display: block; margin-top: 1.4rem; text-align: center;
-      padding: 0.65rem; border: 1px solid var(--border); border-radius: 12px;
-      font-size: 0.8rem; color: rgba(255,255,255,0.35); text-decoration: none;
-      transition: all 0.2s;
-    }
-    .map-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+/* ═══════════════════════════════════════
+   HERO — Nike storytelling + Apple space
+═══════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; flex-direction:column;
+  justify-content: center;
+  padding: 0 5vw;
+  overflow: hidden;
+}
 
-    /* REVIEWS */
-    .reviews-sec { background: var(--black); }
-    .reviews-grid {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
-      margin-top: 2.5rem;
-    }
-    .rev-card {
-      background: var(--off-black); padding: 1.8rem;
-      transition: background 0.18s;
-    }
-    .rev-card:hover { background: var(--dark); }
-    .rev-stars { color: var(--amber); font-size: 0.72rem; margin-bottom: 0.9rem; letter-spacing: 0.1em; }
-    .rev-text { font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.55); margin-bottom: 1.3rem; }
-    .rev-author { font-size: 0.7rem; color: var(--subtle); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-    .rev-source { font-size: 0.66rem; color: var(--amber); margin-top: 0.2rem; }
+/* Gradient mesh background — Stripe-inspired */
+.hero-bg {
+  position: absolute; inset:0; z-index:0;
+  background: var(--black);
+}
+.hero-bg::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 65% 40%, rgba(232,149,10,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 20% 70%, rgba(245,178,52,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(232,149,10,0.06) 0%, transparent 50%);
+}
+/* Subtle grid */
+.hero-bg::after {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
 
-    /* CTA */
-    .cta-sec {
-      background: var(--off-black); border-top: 1px solid var(--border);
-      text-align: center; padding: 7rem 2rem;
-    }
-    .btn-amber {
-      background: var(--amber); color: var(--white);
-      padding: 0.82rem 2.1rem; border-radius: 980px; border: none;
-      font-family: 'Figtree', sans-serif; font-size: 0.88rem; font-weight: 500;
-      text-decoration: none; display: inline-block;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .btn-amber:hover { opacity: 0.84; transform: scale(0.98); }
+.hero-content {
+  position:relative; z-index:1;
+  max-width: 760px;
+}
 
-    /* FOOTER */
-    footer {
-      background: var(--off-black); border-top: 1px solid var(--border);
-      padding: 2rem;
-    }
-    .foot-inner {
-      max-width: 1060px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 1.5rem; flex-wrap: wrap;
-    }
-    .foot-logo { font-family: 'Instrument Serif', serif; font-size: 1rem; color: rgba(255,255,255,0.35); }
-    .foot-copy { font-size: 0.72rem; color: var(--subtle); }
-    .foot-links { display: flex; gap: 1.5rem; list-style: none; }
-    .foot-links a { font-size: 0.72rem; color: var(--subtle); text-decoration: none; transition: color 0.2s; }
-    .foot-links a:hover { color: var(--white); }
+.hero-badge {
+  display: inline-flex; align-items:center; gap:0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.8rem;
+  animation: fadeUp 1s var(--ease-out) 0.1s both;
+}
+.badge-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--amber);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100%{ box-shadow:0 0 0 0 rgba(232,149,10,0.5); }
+  50%    { box-shadow:0 0 0 6px rgba(232,149,10,0); }
+}
 
-    /* REVEAL */
-    .rv { opacity:0; transform:translateY(26px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-    .rv.in { opacity:1; transform:translateY(0); }
-    .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; }
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7.5vw, 7rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  color: var(--white);
+  margin-bottom: 1.6rem;
+  animation: fadeUp 1s var(--ease-out) 0.2s both;
+}
+.hero-headline .highlight {
+  background: linear-gradient(95deg, var(--amber), var(--amber-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-headline .italic {
+  font-style: italic;
+  font-weight: 400;
+}
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .about-grid, .visit-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .reviews-grid { grid-template-columns: 1fr; }
-      .about-visual { display: none; }
-      nav .nav-links { display: none; }
-      section { padding: 5rem 1.4rem; }
-    }
-  </style>
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--cream-dim);
+  max-width: 500px;
+  margin-bottom: 2.8rem;
+  animation: fadeUp 1s var(--ease-out) 0.35s both;
+}
+
+.hero-actions {
+  display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  animation: fadeUp 1s var(--ease-out) 0.5s both;
+}
+
+.btn-primary {
+  display:inline-flex; align-items:center; gap:0.55rem;
+  background: var(--amber);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border-radius: 100px;
+  transition: all 0.25s var(--ease-out);
+  border: none; cursor:pointer;
+}
+.btn-primary:hover {
+  background: var(--amber-2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(232,149,10,0.35);
+}
+.btn-primary svg { transition: transform 0.25s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:0.55rem;
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.9rem 2rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  transition: all 0.25s;
+  cursor:pointer;
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.hero-stats {
+  position:absolute;
+  right:5vw; bottom:8vh;
+  display:flex; gap:0;
+  z-index:1;
+  animation: fadeUp 1s var(--ease-out) 0.7s both;
+}
+.stat-item {
+  padding: 1.6rem 2rem;
+  text-align:center;
+  border: 1px solid var(--border);
+  background: rgba(24,24,24,0.6);
+  backdrop-filter:blur(12px);
+}
+.stat-item:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.stat-item:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left:none; }
+.stat-item:only-child  { border-radius: var(--radius); }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--amber);
+  line-height:1;
+  display:block;
+}
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-top:0.3rem;
+  display:block;
+}
+
+.scroll-cue {
+  position:absolute; bottom:2.5rem; left:5vw;
+  display:flex; align-items:center; gap:0.75rem;
+  font-size:0.7rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  z-index:1;
+  animation: fadeUp 1s var(--ease-out) 0.9s both;
+}
+.scroll-line {
+  width:1px; height:36px;
+  background:linear-gradient(to bottom, var(--amber), transparent);
+  animation: scrollAnim 2s ease-in-out infinite;
+}
+@keyframes scrollAnim {
+  0%,100%{ opacity:0.3; transform:scaleY(1); transform-origin:top; }
+  50%    { opacity:1; }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   TICKER — speed & energy
+═══════════════════════════════════════ */
+.ticker {
+  background: var(--amber);
+  padding: 0.85rem 0;
+  overflow:hidden;
+  position:relative;
+}
+.ticker-track {
+  display:flex;
+  animation: ticker 25s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  display:inline-flex; align-items:center; gap:1.5rem;
+  padding:0 2.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--black);
+}
+.ticker-sep {
+  display:inline-block;
+  width:4px; height:4px; border-radius:50%;
+  background:rgba(0,0,0,0.3);
+  flex-shrink:0;
+}
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ═══════════════════════════════════════
+   WHY US — Notion clarity + Airbnb cards
+═══════════════════════════════════════ */
+.why {
+  padding: 8rem 5vw;
+  background: var(--dark);
+  position:relative;
+}
+.section-label {
+  display:inline-flex; align-items:center; gap:0.6rem;
+  font-size:0.7rem; font-weight:600;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:1rem;
+}
+.section-label::before {
+  content:''; display:block;
+  width:1.5rem; height:1px;
+  background:var(--amber);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  max-width: 560px;
+}
+.section-title em { font-style:italic; color:var(--amber); }
+
+.why-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:1.5px;
+  margin-top:4rem;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:hidden;
+}
+.why-card {
+  background: var(--dark);
+  padding: 2.5rem 2rem;
+  transition: background 0.3s;
+}
+.why-card:hover { background: var(--surface); }
+.why-icon {
+  width:48px; height:48px;
+  background:rgba(232,149,10,0.1);
+  border:1px solid rgba(232,149,10,0.2);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+  margin-bottom:1.5rem;
+  transition: background 0.3s, border-color 0.3s;
+}
+.why-card:hover .why-icon {
+  background:rgba(232,149,10,0.18);
+  border-color:rgba(232,149,10,0.4);
+}
+.why-card h3 {
+  font-family: var(--font-display);
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:0.6rem;
+}
+.why-card p {
+  font-size:0.9rem;
+  font-weight:300;
+  line-height:1.7;
+  color:rgba(197,184,152,0.7);
+}
+
+/* ═══════════════════════════════════════
+   MENU SHOWCASE — Nike bold + Apple space
+═══════════════════════════════════════ */
+.menu {
+  padding: 8rem 5vw;
+  background: var(--black);
+  position:relative; overflow:hidden;
+}
+.menu::before {
+  content:'';
+  position:absolute; top:-40%; right:-20%;
+  width:70vw; height:70vw;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(232,149,10,0.06) 0%, transparent 65%);
+  pointer-events:none;
+}
+.menu-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:4rem;
+  gap:2rem;
+  flex-wrap:wrap;
+}
+.menu-tabs {
+  display:flex; gap:0.4rem;
+  background:var(--surface);
+  border: 1px solid var(--border);
+  padding:4px;
+  border-radius:100px;
+}
+.tab-btn {
+  font-family:var(--font-body);
+  font-size:0.8rem;
+  font-weight:500;
+  padding:0.45rem 1.1rem;
+  border-radius:100px;
+  border:none;
+  background:transparent;
+  color:rgba(255,255,255,0.45);
+  cursor:pointer;
+  transition:all 0.25s;
+}
+.tab-btn.active {
+  background:var(--amber);
+  color:var(--black);
+}
+.tab-btn:hover:not(.active) {
+  color:var(--white);
+  background:rgba(255,255,255,0.06);
+}
+
+.menu-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:1rem;
+}
+.menu-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.8rem;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s, border-color 0.25s;
+  cursor:default;
+  display:none;
+}
+.menu-card.show { display:block; }
+.menu-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+  border-color:rgba(232,149,10,0.25);
+}
+.menu-emoji { font-size:2rem; margin-bottom:1rem; display:block; }
+.menu-name {
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:0.4rem;
+  line-height:1.3;
+}
+.menu-desc {
+  font-size:0.8rem;
+  font-weight:300;
+  color:rgba(197,184,152,0.55);
+  line-height:1.6;
+  margin-bottom:1rem;
+}
+.menu-price {
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--amber);
+}
+
+/* ═══════════════════════════════════════
+   SOCIAL PROOF — Airbnb trust signals
+═══════════════════════════════════════ */
+.proof {
+  padding: 8rem 5vw;
+  background: var(--dark);
+}
+.proof-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:4rem;
+  flex-wrap:wrap;
+  gap:1.5rem;
+}
+.proof-score {
+  display:flex; align-items:center; gap:1.5rem;
+  padding:1.2rem 2rem;
+  background:rgba(232,149,10,0.08);
+  border:1px solid rgba(232,149,10,0.2);
+  border-radius:var(--radius);
+}
+.score-big {
+  font-family:var(--font-display);
+  font-size:3rem;
+  font-weight:900;
+  color:var(--amber);
+  line-height:1;
+}
+.score-stars { color:var(--amber); font-size:1rem; letter-spacing:0.1em; display:block; margin-bottom:0.2rem; }
+.score-label { font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream-dim); }
+
+.reviews-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
+}
+.review-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.8rem;
+  transition:border-color 0.25s;
+}
+.review-card:hover { border-color:rgba(232,149,10,0.25); }
+.review-stars { color:var(--amber); font-size:0.75rem; letter-spacing:0.1em; margin-bottom:1rem; }
+.review-text {
+  font-family:var(--font-display);
+  font-style:italic;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.7;
+  color:var(--cream);
+  margin-bottom:1.2rem;
+}
+.reviewer {
+  display:flex; align-items:center; gap:0.75rem;
+}
+.reviewer-avatar {
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(232,149,10,0.15);
+  border:1px solid rgba(232,149,10,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem;
+  font-weight:600;
+  color:var(--amber);
+  flex-shrink:0;
+}
+.reviewer-name { font-size:0.82rem; font-weight:500; color:var(--white); }
+.reviewer-source { font-size:0.7rem; color:rgba(255,255,255,0.35); }
+
+/* ═══════════════════════════════════════
+   INFO — Hours & Location
+═══════════════════════════════════════ */
+.info {
+  padding: 8rem 5vw;
+  background: var(--black);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+}
+.hours-list { margin-top:2rem; }
+.hours-row {
+  display:flex; justify-content:space-between;
+  align-items:center;
+  padding:0.9rem 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.9rem;
+}
+.hours-day { color:rgba(255,255,255,0.45); font-weight:300; }
+.hours-time { color:var(--cream); font-weight:400; }
+.today-row .hours-day { color:var(--amber); font-weight:500; }
+.today-row .hours-time { color:var(--amber-2); font-weight:500; }
+.open-badge {
+  font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase;
+  background:rgba(232,149,10,0.12);
+  color:var(--amber);
+  border:1px solid rgba(232,149,10,0.2);
+  padding:0.2rem 0.6rem;
+  border-radius:100px;
+}
+.contact-list { margin-top:2rem; display:flex; flex-direction:column; gap:1.2rem; }
+.contact-item {
+  display:flex; gap:1rem; align-items:flex-start;
+}
+.contact-icon {
+  width:44px; height:44px; flex-shrink:0;
+  border:1px solid var(--border);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+  background:var(--surface);
+}
+.contact-label {
+  font-size:0.68rem; letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  display:block;
+  margin-bottom:0.2rem;
+}
+.contact-value { font-size:0.95rem; color:var(--cream); font-weight:400; }
+.contact-value a { color:var(--amber); transition:color 0.2s; }
+.contact-value a:hover { color:var(--amber-2); }
+
+/* ═══════════════════════════════════════
+   FINAL CTA — Big, bold, Nike energy
+═══════════════════════════════════════ */
+.final-cta {
+  position:relative; overflow:hidden;
+  padding: 8rem 5vw;
+  background: var(--dark);
+  text-align:center;
+}
+.final-cta-bg {
+  position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 50%, rgba(232,149,10,0.1) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 20% 0%,  rgba(245,178,52,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 100%, rgba(232,149,10,0.05) 0%, transparent 55%);
+}
+.final-cta-content { position:relative; z-index:1; max-width:680px; margin:0 auto; }
+.cta-headline {
+  font-family:var(--font-display);
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.025em;
+  color:var(--white);
+  margin-bottom:1.4rem;
+}
+.cta-headline span {
+  background:linear-gradient(95deg, var(--amber), var(--amber-2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.cta-sub {
+  font-size:1.05rem;
+  font-weight:300;
+  line-height:1.7;
+  color:var(--cream-dim);
+  margin-bottom:2.5rem;
+}
+.cta-buttons {
+  display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;
+}
+.btn-large {
+  display:inline-flex; align-items:center; gap:0.6rem;
+  font-family:var(--font-body);
+  font-size:1rem; font-weight:600;
+  padding:1rem 2.4rem;
+  border-radius:100px;
+  transition:all 0.25s var(--ease-out);
+  cursor:pointer;
+  border:none;
+  text-decoration:none;
+}
+.btn-amber {
+  background:var(--amber);
+  color:var(--black);
+}
+.btn-amber:hover {
+  background:var(--amber-2);
+  transform:translateY(-2px);
+  box-shadow:0 16px 48px rgba(232,149,10,0.4);
+}
+.btn-outline {
+  background:transparent;
+  color:var(--cream);
+  border:1px solid var(--border);
+}
+.btn-outline:hover {
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(255,255,255,0.25);
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  background:var(--black);
+  border-top:1px solid var(--border);
+  padding:2.5rem 5vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.footer-logo {
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--white);
+}
+.footer-logo span { color:var(--amber); }
+.footer-copy {
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.25);
+}
+.footer-links {
+  display:flex; gap:1.5rem; list-style:none;
+}
+.footer-links a {
+  font-size:0.78rem;
+  color:rgba(255,255,255,0.35);
+  transition:color 0.2s;
+}
+.footer-links a:hover { color:var(--amber); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — Mobile first
+═══════════════════════════════════════ */
+@media (max-width:1024px) {
+  .menu-grid { grid-template-columns:repeat(3,1fr); }
+  .why-grid  { grid-template-columns:repeat(2,1fr); }
+  .why-grid > .why-card:last-child { display:none; }
+  .reviews-grid { grid-template-columns:repeat(2,1fr); }
+  .reviews-grid > .review-card:last-child { display:none; }
+  .info { grid-template-columns:1fr; gap:4rem; }
+  .hero-stats { position:relative; right:auto; bottom:auto; margin-top:3rem; }
+}
+
+@media (max-width:768px) {
+  nav { padding:0 5vw; }
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+  .hero { padding: 0 5vw; }
+  .hero-headline { font-size: clamp(2.8rem, 11vw, 4rem); }
+  .hero-stats { flex-wrap:wrap; }
+  .stat-item:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+  .stat-item:last-child  { border-radius:0 var(--radius) var(--radius) 0; }
+  .menu-grid { grid-template-columns:repeat(2,1fr); }
+  .why-grid  { grid-template-columns:1fr; }
+  .why-grid > .why-card:last-child { display:block; }
+  .reviews-grid { grid-template-columns:1fr; }
+  .reviews-grid > .review-card:last-child { display:block; }
+  .menu-header { flex-direction:column; align-items:flex-start; }
+  .proof-top { flex-direction:column; align-items:flex-start; }
+}
+
+@media (max-width:480px) {
+  .menu-grid { grid-template-columns:1fr; }
+  .hero-actions { flex-direction:column; align-items:flex-start; }
+  .cta-buttons { flex-direction:column; align-items:center; }
+  .btn-large { width:100%; justify-content:center; }
+}
+</style>
 </head>
 <body>
 
-<nav id="nav">
-  <span class="nav-logo">The Noshery</span>
+<!-- ══ NAV ══ -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">The <span>Noshery</span></a>
   <ul class="nav-links">
     <li><a href="#menu">Menu</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#visit">Visit</a></li>
     <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#order" class="nav-cta">Order Now</a></li>
+    <li><a href="#visit">Visit</a></li>
+    <li><a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank" class="nav-order">Order Now →</a></li>
   </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-bg"></div>
+
   <div class="hero-content">
-    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>491A London Road · Isleworth · Open 7 Days</div>
-    <h1>Proper food.<br><em>Proper welcome.</em></h1>
-    <p class="hero-sub">A family-run café serving hearty breakfasts, generous lunches, and the best cup of tea in Isleworth — since the very beginning.</p>
-    <div class="hero-btns">
-      <a href="#menu" class="btn-white">View the Menu</a>
-      <a href="#order" class="btn-outline">Order Online</a>
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Open Today · 6am – 4:30pm
     </div>
-    <div class="hero-rating"><span class="stars">★★★★★</span><span>4.4 on Google · 316 reviews</span></div>
+
+    <h1 class="hero-headline">
+      Isleworth's<br>
+      <span class="italic">favourite</span><br>
+      <span class="highlight">café.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Proper British food made with care. Generous portions, honest prices, and the kind of welcome that keeps people coming back for years.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank" class="btn-primary">
+        <span>Order for Collection</span>
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+      <a href="#menu" class="btn-ghost">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        See the Menu
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">4.4★</span>
+      <span class="stat-label">Google Rating</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">1,000+</span>
+      <span class="stat-label">Happy Customers</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">20+ Yrs</span>
+      <span class="stat-label">Serving Isleworth</span>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    Scroll to explore
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>Full English Breakfast</span><span class="tdot">✦</span><span>Roast Dinners</span><span class="tdot">✦</span><span>Jacket Potatoes</span><span class="tdot">✦</span><span>Fresh Sandwiches & Rolls</span><span class="tdot">✦</span><span>Milkshakes</span><span class="tdot">✦</span><span>Vegetarian Options</span><span class="tdot">✦</span><span>Open 6am–5pm Daily</span><span class="tdot">✦</span><span>Mixed Grill</span><span class="tdot">✦</span><span>Homemade Desserts</span><span class="tdot">✦</span>
-    <span>Full English Breakfast</span><span class="tdot">✦</span><span>Roast Dinners</span><span class="tdot">✦</span><span>Jacket Potatoes</span><span class="tdot">✦</span><span>Fresh Sandwiches & Rolls</span><span class="tdot">✦</span><span>Milkshakes</span><span class="tdot">✦</span><span>Vegetarian Options</span><span class="tdot">✦</span><span>Open 6am–5pm Daily</span><span class="tdot">✦</span><span>Mixed Grill</span><span class="tdot">✦</span><span>Homemade Desserts</span><span class="tdot">✦</span>
+<!-- ══ TICKER ══ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <!-- duplicated for seamless loop -->
+    <span class="ticker-item">Full English Breakfast <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Bobby Special Omelette <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Famous Chicken Salad <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Roast of the Day <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Mixed Grill <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Fresh Baked Jacket Potatoes <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Shepherd's Pie <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Chicken Curry <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Full English Breakfast <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Bobby Special Omelette <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Famous Chicken Salad <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Roast of the Day <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Mixed Grill <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Fresh Baked Jacket Potatoes <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Shepherd's Pie <span class="ticker-sep"></span></span>
+    <span class="ticker-item">Chicken Curry <span class="ticker-sep"></span></span>
   </div>
 </div>
 
-<!-- ABOUT -->
-<section class="about-sec" id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-visual">🍳</div>
+<!-- ══ WHY US ══ -->
+<section class="why" id="about">
+  <div class="section-label reveal">Why locals love us</div>
+  <h2 class="section-title reveal reveal-delay-1">
+    More than just a café.<br><em>A community.</em>
+  </h2>
+
+  <div class="why-grid">
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">🍳</div>
+      <h3>Proper Homemade Food</h3>
+      <p>Every dish is freshly prepared — from our legendary Full English to hearty roasts and classic mains. No shortcuts, ever.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">💷</div>
+      <h3>Brilliant Value</h3>
+      <p>A full breakfast for under £9. Roast dinners from £6.45. Real food at prices that don't make you wince — the way it should be.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-icon">❤️</div>
+      <h3>Warm, Friendly Team</h3>
+      <p>Family-run with over 20 years in Isleworth. Our staff remember your name, your order, and always send you off with a smile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MENU ══ -->
+<section class="menu" id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="section-label reveal">What we serve</div>
+      <h2 class="section-title reveal reveal-delay-1">The <em>full menu.</em></h2>
+    </div>
+    <div class="menu-tabs reveal reveal-delay-2">
+      <button class="tab-btn active" data-tab="breakfast" onclick="switchTab('breakfast', this)">Breakfast</button>
+      <button class="tab-btn" data-tab="mains"     onclick="switchTab('mains', this)">Mains</button>
+      <button class="tab-btn" data-tab="light"     onclick="switchTab('light', this)">Light Bites</button>
+      <button class="tab-btn" data-tab="drinks"    onclick="switchTab('drinks', this)">Drinks</button>
+    </div>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- BREAKFAST -->
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🍳</span>
+      <div class="menu-name">The Big Nosh</div>
+      <div class="menu-desc">2 eggs, 2 bacon, 2 sausage, beans, toast & your choice of extras</div>
+      <div class="menu-price">£7.80</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🌅</span>
+      <div class="menu-name">Early Riser</div>
+      <div class="menu-desc">Bacon, egg, sausage & toast — the perfect morning kickstart</div>
+      <div class="menu-price">£7.90</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🥦</span>
+      <div class="menu-name">Veggie Breakfast</div>
+      <div class="menu-desc">Hash browns, eggs, grilled tomato, mushrooms, beans & toast</div>
+      <div class="menu-price">£7.90</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">👑</span>
+      <div class="menu-name">Full Monty</div>
+      <div class="menu-desc">The works. Everything on the menu. For the seriously hungry.</div>
+      <div class="menu-price">£8.95</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🥚</span>
+      <div class="menu-name">2 Eggs on Toast</div>
+      <div class="menu-desc">Fried, poached, or scrambled — simple and perfect</div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🧆</span>
+      <div class="menu-name">Bobby Special Omelette</div>
+      <div class="menu-desc">Our signature — stuffed with your choice of fillings, huge portions</div>
+      <div class="menu-price">£5.95</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🥓</span>
+      <div class="menu-name">Bacon Bap</div>
+      <div class="menu-desc">Fresh roll, crispy bacon, your choice of sauce</div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card show" data-cat="breakfast">
+      <span class="menu-emoji">🍞</span>
+      <div class="menu-name">Sausage Bap</div>
+      <div class="menu-desc">Pork sausages in a fresh bap — a classic for a reason</div>
+      <div class="menu-price">£3.50</div>
+    </div>
+
+    <!-- MAINS -->
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🍗</span>
+      <div class="menu-name">Roast Chicken</div>
+      <div class="menu-desc">Traditional Sunday roast with veg, roasties & gravy</div>
+      <div class="menu-price">£7.45</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🥩</span>
+      <div class="menu-name">Roast Beef</div>
+      <div class="menu-desc">Slow-roasted beef with Yorkshire pud, veg & rich gravy</div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🐑</span>
+      <div class="menu-name">Roast Lamb</div>
+      <div class="menu-desc">Tender lamb with mint sauce, roast veg & potatoes</div>
+      <div class="menu-price">£7.45</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🥘</span>
+      <div class="menu-name">Shepherd's Pie</div>
+      <div class="menu-desc">Minced lamb under a golden mash crust — pure comfort</div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🍛</span>
+      <div class="menu-name">Chicken Curry</div>
+      <div class="menu-desc">Rich, warming curry with rice or chips</div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🥩</span>
+      <div class="menu-name">Mixed Grill</div>
+      <div class="menu-desc">Steak, chop, sausage, egg, chips & peas — the ultimate plate</div>
+      <div class="menu-price">£8.95</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🍝</span>
+      <div class="menu-name">Lasagne</div>
+      <div class="menu-desc">Homemade beef lasagne with garlic bread & salad</div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card" data-cat="mains">
+      <span class="menu-emoji">🍔</span>
+      <div class="menu-name">Beefburger & Chips</div>
+      <div class="menu-desc">¼ pounder in a bun with lettuce, tomato, and crispy chips</div>
+      <div class="menu-price">from £4.50</div>
+    </div>
+
+    <!-- LIGHT BITES -->
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🥗</span>
+      <div class="menu-name">Famous Chicken Salad</div>
+      <div class="menu-desc">Nosh chicken with generous chips and side salad — a crowd favourite</div>
+      <div class="menu-price">£5.45</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🥔</span>
+      <div class="menu-name">Jacket Potato – Tuna</div>
+      <div class="menu-desc">Loaded baked potato with tuna mayo</div>
+      <div class="menu-price">£5.50</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🥔</span>
+      <div class="menu-name">Jacket Potato – Bolognese</div>
+      <div class="menu-desc">Baked potato piled high with our homemade bolognese</div>
+      <div class="menu-price">£5.50</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🥪</span>
+      <div class="menu-name">Toasted Sandwich</div>
+      <div class="menu-desc">Choose your filling — cheese, ham, tuna & more</div>
+      <div class="menu-price">from £3.00</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🍖</span>
+      <div class="menu-name">Ham, Egg, Chips & Peas</div>
+      <div class="menu-desc">A proper British classic done right</div>
+      <div class="menu-price">£5.50</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🍰</span>
+      <div class="menu-name">Cherry Pie & Custard</div>
+      <div class="menu-desc">Warm homemade pie with thick, creamy custard</div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🧇</span>
+      <div class="menu-name">Cheese on Toast</div>
+      <div class="menu-desc">Melted cheese on doorstep toast — simple perfection</div>
+      <div class="menu-price">£2.50</div>
+    </div>
+    <div class="menu-card" data-cat="light">
+      <span class="menu-emoji">🍟</span>
+      <div class="menu-name">Chips</div>
+      <div class="menu-desc">Crispy golden chips — the perfect side or snack</div>
+      <div class="menu-price">£2.00</div>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="menu-card" data-cat="drinks">
+      <span class="menu-emoji">☕</span>
+      <div class="menu-name">Tea</div>
+      <div class="menu-desc">Proper British builder's tea — strong and hot</div>
+      <div class="menu-price">£1.50</div>
+    </div>
+    <div class="menu-card" data-cat="drinks">
+      <span class="menu-emoji">☕</span>
+      <div class="menu-name">Coffee</div>
+      <div class="menu-desc">Freshly brewed — cappuccino, latte, or Americano</div>
+      <div class="menu-price">from £2.00</div>
+    </div>
+    <div class="menu-card" data-cat="drinks">
+      <span class="menu-emoji">🧋</span>
+      <div class="menu-name">Milkshake</div>
+      <div class="menu-desc">Thick, creamy shakes — chocolate, vanilla, or strawberry</div>
+      <div class="menu-price">£2.50</div>
+    </div>
+    <div class="menu-card" data-cat="drinks">
+      <span class="menu-emoji">🧊</span>
+      <div class="menu-name">Iced Coffee</div>
+      <div class="menu-desc">Cold brew over ice — the perfect summer treat</div>
+      <div class="menu-price">£3.00</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ REVIEWS ══ -->
+<section class="proof" id="reviews">
+  <div class="proof-top">
+    <div>
+      <div class="section-label reveal">What people say</div>
+      <h2 class="section-title reveal reveal-delay-1">Loved by<br><em>the community.</em></h2>
+    </div>
+    <div class="proof-score reveal reveal-delay-2">
+      <div class="score-big">4.4</div>
       <div>
-        <span class="label rv">Our Story</span>
-        <h2 class="sec-title rv d1">A café the community calls home.</h2>
-        <p class="sec-body rv d2">The Noshery has been a cornerstone of Isleworth for years — a spotless, welcoming café run by a family who genuinely care. Regulars come for the generous portions and honest prices, and keep coming back for the warmth. Right opposite West Thames College on London Road.</p>
-        <div class="stats-row rv d3">
-          <div class="stat"><span class="stat-n">★4.4</span><div class="stat-l">Google Rating</div></div>
-          <div class="stat"><span class="stat-n">316</span><div class="stat-l">Reviews</div></div>
-          <div class="stat"><span class="stat-n">7</span><div class="stat-l">Days a Week</div></div>
+        <span class="score-stars">★★★★★</span>
+        <span class="score-label">1,013 reviews across all platforms</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Best café in Isleworth. The food is always lovely and not dripping with grease. Staff are fab and always friendly — much better price than surrounding cafes."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">MW</div>
+        <div>
+          <div class="reviewer-name">Maria Woolner</div>
+          <div class="reviewer-source">Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"With £10 you get full! Beans, bacon and sausage are sooo delicious. This place consistently delivers great food at a sensible price — staff are always upbeat and welcoming."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">EH</div>
+        <div>
+          <div class="reviewer-name">Eri Huartos</div>
+          <div class="reviewer-source">Google Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-3">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Love this family run caff — does the best tea and has generous food servings. The staff's welcoming smiles and care they extend make it truly special."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">JK</div>
+        <div>
+          <div class="reviewer-name">Jastinder Kaur</div>
+          <div class="reviewer-source">Google Review</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MENU -->
-<section class="menu-sec" id="menu">
-  <div class="container">
-    <span class="label rv">What We Serve</span>
-    <h2 class="sec-title rv d1">The Menu</h2>
-    <div class="menu-tabs">
-      <button class="tab active" onclick="showTab('b',this)">Breakfast</button>
-      <button class="tab" onclick="showTab('l',this)">Lunches</button>
-      <button class="tab" onclick="showTab('s',this)">Sandwiches</button>
-      <button class="tab" onclick="showTab('j',this)">Jackets & Salads</button>
-      <button class="tab" onclick="showTab('d',this)">Drinks & Desserts</button>
-    </div>
-
-    <div id="b" class="menu-grid">
-      <div class="menu-item"><div><span class="item-icon">🍳</span><div class="item-name">The Big Nosh</div><div class="item-desc">2 egg, 2 bacon, mushrooms, sausage, tomatoes, 2 toast & tea</div></div><div class="item-price">£7.80</div></div>
-      <div class="menu-item"><div><span class="item-icon">🌅</span><div class="item-name">Early Riser</div><div class="item-desc">Egg, 2 bacon, 2 sausages, chips, beans, 2 toast & tea</div></div><div class="item-price">£7.90</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥦</span><div class="item-name">Veggie Breakfast</div><div class="item-desc">2 eggs, chips, beans, mushrooms, tomatoes, hash browns & tea</div></div><div class="item-price">£7.90</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥓</span><div class="item-name">Full Monty</div><div class="item-desc">2 egg, 2 bacon, sausage, mushrooms, beans, black pudding, bubble, 2 toast & tea</div></div><div class="item-price">£8.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg, 2 Bacon, Sausage, Bubble & Beans</div><div class="item-desc">A proper plate to start the day</div></div><div class="item-price">£5.90</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍅</span><div class="item-name">Egg, 2 Bacon, Beans & Tomatoes</div><div class="item-desc">Simple, fresh and satisfying</div></div><div class="item-price">£5.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍞</span><div class="item-name">2 Eggs on Toast</div><div class="item-desc">Poached or scrambled</div></div><div class="item-price">£3.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🧆</span><div class="item-name">Build Your Own Breakfast</div><div class="item-desc">Egg £1 · Bacon £1.80 · Sausage £1.10 · Hash Browns £1.80 · Mushrooms £1.10 · Tomatoes £1.10 · Bubble £2 · Black Pudding £1.10</div></div><div class="item-price">from £1</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍔</span><div class="item-name">Burgers</div><div class="item-desc">Burger · Cheeseburger · Veggie · Half Pounder · Egg Cheese & Bacon · Chicken — all with chips & garnish</div></div><div class="item-price">£4.50–£5.75</div></div>
-    </div>
-
-    <div id="l" class="menu-grid" style="display:none">
-      <div class="menu-item"><div><span class="item-icon">🍖</span><div class="item-name">Roast Lamb</div><div class="item-desc">With roast potatoes & 2 vegetables</div></div><div class="item-price">£7.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥩</span><div class="item-name">Roast Beef</div><div class="item-desc">With roast potatoes & 2 vegetables</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🐷</span><div class="item-name">Roast Pork</div><div class="item-desc">With roast potatoes & 2 vegetables</div></div><div class="item-price">£6.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍗</span><div class="item-name">Roast Chicken</div><div class="item-desc">With roast potatoes & 2 vegetables</div></div><div class="item-price">£7.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥩</span><div class="item-name">Lamb Chops</div><div class="item-desc">Tender lamb chops, cooked to order</div></div><div class="item-price">£7.75</div></div>
-      <div class="menu-item"><div><span class="item-icon">🐷</span><div class="item-name">Pork Chops</div><div class="item-desc">Juicy pork chops, served fresh</div></div><div class="item-price">£7.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍗</span><div class="item-name">Nosh Chicken</div><div class="item-desc">Chips & salad</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍛</span><div class="item-name">Chicken Curry & Rice</div><div class="item-desc">Rich, warming curry with fluffy rice</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🌶️</span><div class="item-name">Chilli Con Carne & Rice</div><div class="item-desc">Hearty chilli with rice</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍝</span><div class="item-name">Spaghetti Bolognese</div><div class="item-desc">Classic bolognese on spaghetti</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🫕</span><div class="item-name">Lasagna & Chips</div><div class="item-desc">Homemade lasagna with chips</div></div><div class="item-price">£6.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍳</span><div class="item-name">Ham, Egg, Chips & Peas</div><div class="item-desc">A British classic done properly</div></div><div class="item-price">£5.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥩</span><div class="item-name">Gammon Steak</div><div class="item-desc">With egg, chips, peas & pineapple slice</div></div><div class="item-price">£6.70</div></div>
-      <div class="menu-item"><div><span class="item-icon">🌭</span><div class="item-name">2 Sausages, Mash, Onions & Peas</div><div class="item-desc">Comfort food done right</div></div><div class="item-price">£5.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🔥</span><div class="item-name">Mixed Grill</div><div class="item-desc">Lamb chop, liver, bacon, sausage, egg, tomatoes, chips, peas & mushrooms</div></div><div class="item-price">£8.95</div></div>
-    </div>
-
-    <div id="s" class="menu-grid" style="display:none">
-      <div class="menu-item"><div><span class="item-icon">🥓</span><div class="item-name">Bacon</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.80 / £2.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🌭</span><div class="item-name">Sausage</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.80 / £2.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.40 / £2.10</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg & Bacon</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£3.40 / £3.10</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg & Sausage</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£3.40 / £3.10</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg, Bacon & Sausage</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£4.10 / £3.80</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥚</span><div class="item-name">Egg, Bacon, Sausage & Mushrooms</div><div class="item-desc">Sandwich or roll — the works!</div></div><div class="item-price">£4.70 / £4.40</div></div>
-      <div class="menu-item"><div><span class="item-icon">🐟</span><div class="item-name">Tuna</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.80 / £2.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥩</span><div class="item-name">Ham</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.60 / £2.30</div></div>
-      <div class="menu-item"><div><span class="item-icon">🧀</span><div class="item-name">Cheese</div><div class="item-desc">Sandwich or roll</div></div><div class="item-price">£2.60 / £2.30</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍗</span><div class="item-name">Chicken</div><div class="item-desc">Sandwich or roll · Salad +20p · Crusty bread +30p · Toasted +30p</div></div><div class="item-price">£2.80 / £2.30</div></div>
-    </div>
-
-    <div id="j" class="menu-grid" style="display:none">
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Cheese</div><div class="item-desc"></div></div><div class="item-price">£4.70</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Tuna</div><div class="item-desc"></div></div><div class="item-price">£5.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Beans</div><div class="item-desc"></div></div><div class="item-price">£4.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Coleslaw</div><div class="item-desc"></div></div><div class="item-price">£4.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Bolognese</div><div class="item-desc"></div></div><div class="item-price">£5.20</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Chilli</div><div class="item-desc"></div></div><div class="item-price">£5.20</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥔</span><div class="item-name">Jacket with Chicken Curry</div><div class="item-desc">Extra filling +£1.10</div></div><div class="item-price">£5.20</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥗</span><div class="item-name">Chicken Salad</div><div class="item-desc"></div></div><div class="item-price">£5.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥗</span><div class="item-name">Ham Salad</div><div class="item-desc"></div></div><div class="item-price">£5.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥗</span><div class="item-name">Cheese Salad</div><div class="item-desc"></div></div><div class="item-price">£5.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥗</span><div class="item-name">Tuna Salad</div><div class="item-desc"></div></div><div class="item-price">£5.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍳</span><div class="item-name">Omelettes</div><div class="item-desc">Cheese · Mushroom · Ham · Bacon · Spanish · Plain — with chips, peas or salad. Extra filling +80p</div></div><div class="item-price">from £5.00</div></div>
-    </div>
-
-    <div id="d" class="menu-grid" style="display:none">
-      <div class="menu-item"><div><span class="item-icon">🫖</span><div class="item-name">Tea</div><div class="item-desc">Proper pot of tea</div></div><div class="item-price">£1.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">☕</span><div class="item-name">Coffee</div><div class="item-desc">Fresh brewed</div></div><div class="item-price">£2.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">☕</span><div class="item-name">Cappuccino</div><div class="item-desc"></div></div><div class="item-price">£2.45</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍫</span><div class="item-name">Hot Chocolate</div><div class="item-desc"></div></div><div class="item-price">£2.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🧊</span><div class="item-name">Iced Coffee</div><div class="item-desc"></div></div><div class="item-price">£3.00</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥛</span><div class="item-name">Milkshake</div><div class="item-desc">Banana · Chocolate · Raspberry · Strawberry · Vanilla</div></div><div class="item-price">£2.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🧃</span><div class="item-name">Ribena</div><div class="item-desc"></div></div><div class="item-price">£1.10</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍊</span><div class="item-name">Orange Juice</div><div class="item-desc"></div></div><div class="item-price">£1.60</div></div>
-      <div class="menu-item"><div><span class="item-icon">💧</span><div class="item-name">Water</div><div class="item-desc"></div></div><div class="item-price">£0.95</div></div>
-      <div class="menu-item"><div><span class="item-icon">🥧</span><div class="item-name">Apple Pie</div><div class="item-desc">With ice cream or custard</div></div><div class="item-price">£3.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍒</span><div class="item-name">Cherry Pie</div><div class="item-desc">With ice cream or custard</div></div><div class="item-price">£3.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍞</span><div class="item-name">Baked Jam Roll</div><div class="item-desc">With ice cream or custard</div></div><div class="item-price">£3.50</div></div>
-      <div class="menu-item"><div><span class="item-icon">🍦</span><div class="item-name">Ice Cream</div><div class="item-desc"></div></div><div class="item-price">£1.75</div></div>
-    </div>
-    <p class="menu-note">Prices correct at time of photography. Ask the team for today's specials.</p>
-  </div>
-</section>
-
-<!-- VISIT -->
-<section class="visit-sec" id="visit">
-  <div class="container">
-    <span class="label rv">Plan Your Visit</span>
-    <h2 class="sec-title rv d1">Find Us</h2>
-    <div class="visit-grid">
-      <div class="info-card rv">
-        <h3>Opening Hours</h3>
-        <div class="hr-row"><span class="hr-day">Monday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Tuesday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Wednesday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Thursday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Friday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Saturday</span><span class="hr-time">6:00am – 5:00pm</span></div>
-        <div class="hr-row"><span class="hr-day">Sunday</span><span class="hr-time">6:00am – 5:00pm</span></div>
+<!-- ══ INFO — HOURS & VISIT ══ -->
+<section class="info" id="visit">
+  <div>
+    <div class="section-label reveal">When we're open</div>
+    <h2 class="section-title reveal reveal-delay-1">Opening<br><em>Hours.</em></h2>
+    <div class="hours-list reveal reveal-delay-2">
+      <div class="hours-row today-row">
+        <span class="hours-day">Monday</span>
+        <span class="hours-time">6:00am – 4:30pm <span class="open-badge">Open</span></span>
       </div>
-      <div class="info-card rv d1">
-        <h3>Location</h3>
-        <div class="loc-row"><span>📍</span><span>491A London Road, Isleworth<br>Hounslow, TW7 4DA<br><em style="color:rgba(255,255,255,0.25);font-style:normal">Opposite West Thames College</em></span></div>
-        <div class="loc-row"><span>📞</span><span><a href="tel:02082328618">020 8232 8618</a></span></div>
-        <div class="loc-row"><span>🚉</span><span>Isleworth station — 0.08 miles<br>Bus stop directly outside</span></div>
-        <div class="loc-row"><span>🅿️</span><span>Metered parking available outside</span></div>
-        <a href="https://maps.google.com/?q=491A+London+Road+Isleworth+TW7+4DA" target="_blank" class="map-btn">📍 Open in Google Maps →</a>
+      <div class="hours-row today-row">
+        <span class="hours-day">Tuesday</span>
+        <span class="hours-time">6:00am – 4:30pm</span>
+      </div>
+      <div class="hours-row today-row">
+        <span class="hours-day">Wednesday</span>
+        <span class="hours-time">6:00am – 4:30pm</span>
+      </div>
+      <div class="hours-row today-row">
+        <span class="hours-day">Thursday</span>
+        <span class="hours-time">6:00am – 4:30pm</span>
+      </div>
+      <div class="hours-row today-row">
+        <span class="hours-day">Friday</span>
+        <span class="hours-time">6:00am – 4:30pm</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Saturday</span>
+        <span class="hours-time">7:00am – 4:30pm</span>
+      </div>
+      <div class="hours-row today-row">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-time">6:00am – 4:30pm</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label reveal">Find us</div>
+    <h2 class="section-title reveal reveal-delay-1">Come<br><em>visit us.</em></h2>
+    <div class="contact-list reveal reveal-delay-2">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <span class="contact-label">Address</span>
+          <span class="contact-value">491A London Road, Isleworth, TW7 4DA</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <span class="contact-label">Phone</span>
+          <span class="contact-value"><a href="tel:02082328618">020 8232 8618</a></span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🗺️</div>
+        <div>
+          <span class="contact-label">Directions</span>
+          <span class="contact-value"><a href="https://maps.google.com/?q=491A+London+Road+Isleworth+TW7+4DA" target="_blank">Open in Google Maps →</a></span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🛵</div>
+        <div>
+          <span class="contact-label">Order Online</span>
+          <span class="contact-value"><a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank">Order via Just Eat →</a></span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section class="reviews-sec" id="reviews">
-  <div class="container">
-    <span class="label rv">What People Say</span>
-    <h2 class="sec-title rv d1">Customer Reviews</h2>
-    <div class="reviews-grid">
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The cafe is spotless and the food is clean and tasty. Best cafe in Isleworth. Great value for money. HIGHLY RECOMMEND."</p><div class="rev-author">Happy Customer</div><div class="rev-source">Google Reviews</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Love this family-run caff, which does the best tea and has generous food servings. Can't fault the family and staff for their welcoming smiles."</p><div class="rev-author">Regular Customer</div><div class="rev-source">Google Reviews</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Great English breakfast! With £10 you get full! Beans, bacon and sausage are so delicious! Coffee isn't too bad either."</p><div class="rev-author">Verified Visitor</div><div class="rev-source">Google Reviews</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Excellent food & customer service, highly recommended café for every working person — great family atmosphere."</p><div class="rev-author">Local Regular</div><div class="rev-source">Google Reviews</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Absolutely wholesome breakfast. Everything was perfect down to the cup of tea! I need to come here more regularly."</p><div class="rev-author">New Fan</div><div class="rev-source">Google Reviews</div></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Top selection of dinners with fresh veg. Long opening hours including Sunday lunchtime for a cheap and tasty roast. Excellent value for money."</p><div class="rev-author">Yell.com Review</div><div class="rev-source">Yell.com</div></div>
+<!-- ══ FINAL CTA ══ -->
+<section class="final-cta">
+  <div class="final-cta-bg"></div>
+  <div class="final-cta-content">
+    <h2 class="cta-headline reveal">
+      Hungry?<br>
+      Come <span>eat well.</span>
+    </h2>
+    <p class="cta-sub reveal reveal-delay-1">
+      Join hundreds of locals who start their day — and end their week — with us.<br>
+      You deserve a proper meal at a fair price.
+    </p>
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank" class="btn-large btn-amber">
+        Order for Collection
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+      <a href="https://maps.google.com/?q=491A+London+Road+Isleworth+TW7+4DA" target="_blank" class="btn-large btn-outline">
+        📍 Get Directions
+      </a>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-sec" id="order">
-  <div class="container">
-    <span class="label">Order Online</span>
-    <h2 class="sec-title" style="max-width:500px;margin:0 auto 1rem">Fancy a Noshery?</h2>
-    <p class="sec-body" style="margin:0 auto 2.5rem;text-align:center">Order for delivery or collection through Just Eat — hot food, straight to your door.</p>
-    <a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank" class="btn-amber">Order on Just Eat</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
+<!-- ══ FOOTER ══ -->
 <footer>
-  <div class="foot-inner">
-    <span class="foot-logo">The Noshery</span>
-    <p class="foot-copy">491A London Road, Isleworth TW7 4DA · © 2025 The Noshery</p>
-    <ul class="foot-links">
-      <li><a href="#menu">Menu</a></li>
-      <li><a href="#visit">Hours</a></li>
-      <li><a href="tel:02082328618">Call Us</a></li>
-    </ul>
-  </div>
+  <div class="footer-logo">The <span>Noshery</span></div>
+  <ul class="footer-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#visit">Visit</a></li>
+    <li><a href="tel:02082328618">Call Us</a></li>
+    <li><a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank">Order Online</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 The Noshery · 491A London Road, Isleworth TW7 4DA</p>
 </footer>
 
+<!-- ══ JS ══ -->
 <script>
-  // Nav blur on scroll
-  window.addEventListener('scroll', () => {
-    document.getElementById('nav').style.background =
-      window.scrollY > 10 ? 'rgba(10,10,10,0.94)' : 'rgba(10,10,10,0.75)';
+/* Scroll reveal */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
   });
+}, { threshold: 0.12 });
 
-  // Tabs
-  const allTabs = ['b','l','s','j','d'];
-  function showTab(id, btn) {
-    allTabs.forEach(t => document.getElementById(t).style.display = t === id ? 'grid' : 'none');
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* Sticky nav shadow */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.style.background = window.scrollY > 60
+    ? 'rgba(10,10,10,0.95)'
+    : 'rgba(10,10,10,0.75)';
+});
+
+/* Menu tabs */
+function switchTab(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.menu-card').forEach(card => {
+    card.classList.toggle('show', card.dataset.cat === cat);
+  });
+}
+
+/* Mobile nav toggle */
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (links.style.display === 'flex') {
+    links.style.display = 'none';
+  } else {
+    links.style.cssText = `
+      display:flex; flex-direction:column; gap:0;
+      position:fixed; top:64px; left:0; right:0;
+      background:rgba(10,10,10,0.98);
+      backdrop-filter:blur(20px);
+      padding:1rem 0 1.5rem;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      z-index:998;
+    `;
+    links.querySelectorAll('li').forEach(li => { li.style.padding = '0.6rem 5vw'; });
   }
-
-  // Scroll reveal
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+}
 </script>
+
 </body>
 </html>
