@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Noshery – Isleworth's Favourite Café</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f5efe6;
+      --warm-white: #faf7f2;
+      --espresso: #2b1a0e;
+      --coffee: #5c3d1e;
+      --caramel: #c8873a;
+      --sage: #7a8c6e;
+      --terracotta: #c4614a;
+      --gold: #d4a843;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--espresso);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(200,135,58,0.2);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(43,26,14,0.1); }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--coffee);
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--caramel); font-style: italic; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--espresso);
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1.5px; background: var(--caramel);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--caramel); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding-top: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 4rem 5rem 6rem;
+      position: relative; z-index: 2;
+    }
+    .hero-tag {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--caramel); font-weight: 500;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-tag::before { content: ''; display: block; width: 30px; height: 1px; background: var(--caramel); }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 1.1;
+      color: var(--espresso);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--caramel);
+      display: block;
+    }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--coffee); line-height: 1.7;
+      max-width: 400px; margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
+    }
+    .btn-primary {
+      background: var(--caramel); color: white;
+      padding: 0.85rem 2rem; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--coffee); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--espresso);
+      padding: 0.85rem 2rem; border: 1.5px solid var(--espresso);
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-outline:hover {
+      background: var(--espresso); color: var(--cream);
+    }
+    .hero-visual {
+      background: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    .hero-visual-inner {
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(200,135,58,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(122,140,110,0.2) 0%, transparent 50%),
+        var(--cream);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-plate {
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff8ef, var(--cream));
+      box-shadow: 30px 40px 80px rgba(43,26,14,0.15), inset -10px -10px 30px rgba(200,135,58,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7rem;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .hero-badge {
+      position: absolute; bottom: 3rem; right: 3rem;
+      background: var(--espresso); color: var(--gold);
+      width: 110px; height: 110px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      animation: spin-slow 20s linear infinite;
+    }
+    .hero-badge .big { font-size: 2rem; font-weight: 700; line-height: 1; }
+    .hero-badge .small { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+    @keyframes spin-slow { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+    /* ── STRIP ── */
+    .strip {
+      background: var(--espresso); color: var(--gold);
+      padding: 1rem 0; overflow: hidden;
+    }
+    .strip-inner {
+      display: flex; gap: 4rem; white-space: nowrap;
+      animation: marquee 18s linear infinite;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1rem;
+    }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .strip-dot { color: var(--caramel); }
+
+    /* ── ABOUT ── */
+    .about {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; min-height: 80vh;
+    }
+    .about-img {
+      background:
+        radial-gradient(ellipse at 60% 30%, rgba(200,135,58,0.3), transparent 60%),
+        var(--coffee);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; padding: 5rem;
+      position: relative; overflow: hidden;
+    }
+    .about-img::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 40px,
+        rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px
+      );
+    }
+    .about-text {
+      padding: 5rem 5rem 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+      background: var(--cream);
+    }
+    .section-tag {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--caramel); font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .about-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      line-height: 1.15; margin-bottom: 1.5rem;
+    }
+    .about-text p {
+      font-size: 1rem; line-height: 1.8; color: var(--coffee);
+      margin-bottom: 1rem; max-width: 460px;
+    }
+    .about-stats {
+      display: flex; gap: 3rem; margin-top: 2rem;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif; font-size: 2.5rem;
+      color: var(--caramel); font-weight: 700;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--coffee); letter-spacing: 0.05em; margin-top: 0.2rem; }
+
+    /* ── MENU ── */
+    .menu-section {
+      padding: 6rem 5rem;
+      background: var(--warm-white);
+    }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: 0.75rem;
+    }
+    .section-header p { color: var(--coffee); font-size: 1rem; }
+    .menu-tabs {
+      display: flex; justify-content: center; gap: 0.5rem;
+      margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: none; border: 1.5px solid var(--espresso);
+      color: var(--espresso); padding: 0.5rem 1.5rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--espresso); color: var(--warm-white);
+    }
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5px; background: rgba(43,26,14,0.08);
+    }
+    .menu-card {
+      background: var(--warm-white);
+      padding: 2rem;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+    .menu-card:hover { background: var(--cream); }
+    .menu-card-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; margin-bottom: 0.4rem;
+    }
+    .menu-card-info p { font-size: 0.85rem; color: var(--coffee); line-height: 1.5; }
+    .menu-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--caramel);
+      font-weight: 700; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .menu-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    /* ── HOURS & LOCATION ── */
+    .info-section {
+      background: var(--espresso); color: var(--cream);
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .info-block { padding: 5rem; }
+    .info-block:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+    .info-block h2 {
+      font-family: 'Playfair Display', serif; font-size: 2rem;
+      margin-bottom: 2.5rem; color: var(--gold);
+    }
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.95rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day { font-weight: 500; }
+    .hours-row .time { color: var(--gold); }
+    .location-detail {
+      display: flex; align-items: flex-start; gap: 1rem;
+      margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;
+    }
+    .location-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .location-detail a { color: var(--gold); text-decoration: none; }
+    .location-detail a:hover { text-decoration: underline; }
+    .map-placeholder {
+      margin-top: 2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 1.5rem; text-align: center; font-size: 0.85rem;
+      color: rgba(255,255,255,0.4); line-height: 1.8;
+    }
+
+    /* ── REVIEWS ── */
+    .reviews {
+      padding: 6rem 5rem;
+      background: var(--cream);
+    }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem;
+      margin-top: 3rem;
+    }
+    .review-card {
+      background: var(--warm-white);
+      padding: 2rem;
+      position: relative;
+    }
+    .review-card::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif; font-size: 5rem;
+      color: var(--caramel); opacity: 0.3;
+      position: absolute; top: -0.5rem; left: 1.2rem; line-height: 1;
+    }
+    .review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; }
+    .review-text { font-size: 0.95rem; line-height: 1.7; color: var(--coffee); margin-bottom: 1.5rem; }
+    .reviewer { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+    .reviewer-source { font-size: 0.7rem; color: var(--caramel); }
+
+    /* ── ORDER / CTA ── */
+    .order-cta {
+      background: var(--caramel);
+      padding: 5rem;
+      text-align: center;
+    }
+    .order-cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: white; margin-bottom: 1rem;
+    }
+    .order-cta p { color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-bottom: 2.5rem; }
+    .order-cta .btn-white {
+      background: white; color: var(--caramel);
+      padding: 1rem 2.5rem; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .order-cta .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a0e05; color: rgba(255,255,255,0.5);
+      padding: 3rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    footer .foot-logo {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem;
+      color: var(--gold); font-style: italic;
+    }
+    footer p { font-size: 0.8rem; line-height: 1.6; }
+    footer .foot-links { display: flex; gap: 1.5rem; list-style: none; }
+    footer .foot-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8rem; }
+    footer .foot-links a:hover { color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { height: 50vh; }
+      .hero-text { padding: 4rem 2rem 2rem; }
+      .about { grid-template-columns: 1fr; }
+      .about-img { height: 300px; padding: 3rem; }
+      .about-text { padding: 3rem 2rem; }
+      .info-section { grid-template-columns: 1fr; }
+      .info-block:first-child { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .info-block { padding: 3rem 2rem; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .menu-section, .reviews, .order-cta { padding: 4rem 2rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      footer { padding: 2rem; flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <span class="nav-logo">The <span>Noshery</span></span>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#hours">Visit Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#order">Order</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">Isleworth's Favourite Café</div>
+    <h1>Proper food,<em>proper welcome.</em></h1>
+    <p class="hero-sub">A family-run café on London Road serving hearty breakfasts, generous lunches, and the best cup of tea in Isleworth — seven days a week.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">See the Menu</a>
+      <a href="#order" class="btn-outline">Order Online</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-inner">
+      <div class="hero-plate">🍳</div>
+    </div>
+    <div class="hero-badge">
+      <div class="big">★4.4</div>
+      <div class="small">Google<br>Reviews</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span>Full English Breakfast</span><span class="strip-dot">✦</span>
+    <span>Homemade Daily Specials</span><span class="strip-dot">✦</span>
+    <span>Fresh Coffee &amp; Tea</span><span class="strip-dot">✦</span>
+    <span>Chicken Dishes</span><span class="strip-dot">✦</span>
+    <span>Sandwiches &amp; Rolls</span><span class="strip-dot">✦</span>
+    <span>Vegetarian Options</span><span class="strip-dot">✦</span>
+    <span>Open 7 Days a Week</span><span class="strip-dot">✦</span>
+    <span>Full English Breakfast</span><span class="strip-dot">✦</span>
+    <span>Homemade Daily Specials</span><span class="strip-dot">✦</span>
+    <span>Fresh Coffee &amp; Tea</span><span class="strip-dot">✦</span>
+    <span>Chicken Dishes</span><span class="strip-dot">✦</span>
+    <span>Sandwiches &amp; Rolls</span><span class="strip-dot">✦</span>
+    <span>Vegetarian Options</span><span class="strip-dot">✦</span>
+    <span>Open 7 Days a Week</span><span class="strip-dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img">🥚</div>
+  <div class="about-text">
+    <div class="section-tag">Our Story</div>
+    <h2>A café with heart, since the very beginning.</h2>
+    <p>The Noshery has been a cornerstone of the Isleworth community for years — a spotless, welcoming café run by a family who genuinely care. Regulars come for the generous portions and honest prices, and keep coming back for the warmth.</p>
+    <p>From a classic full English to our famous chicken dishes and fresh daily specials, every plate is cooked with care. We're just across from the college on London Road — easy to find, impossible to forget.</p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">1000+</div>
+        <div class="stat-label">Happy Regulars</div>
+      </div>
+      <div>
+        <div class="stat-num">★4.4</div>
+        <div class="stat-label">Google Rating</div>
+      </div>
+      <div>
+        <div class="stat-num">7</div>
+        <div class="stat-label">Days a Week</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="section-header fade-up">
+    <div class="section-tag">What We Serve</div>
+    <h2>The Menu</h2>
+    <p>Simple, hearty food made with care every day.</p>
+  </div>
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="showTab('breakfast', this)">Breakfast</button>
+    <button class="tab-btn" onclick="showTab('mains', this)">Mains</button>
+    <button class="tab-btn" onclick="showTab('drinks', this)">Drinks &amp; Extras</button>
+  </div>
+
+  <div id="breakfast" class="menu-grid">
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍳</div>
+        <h3>Full English Breakfast</h3>
+        <p>Eggs, bacon, sausage, beans, toast & all the trimmings</p>
+      </div>
+      <div class="menu-price">from £7</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥚</div>
+        <h3>Poached Eggs &amp; Hash Browns</h3>
+        <p>Perfectly poached eggs on toast with crispy hash browns</p>
+      </div>
+      <div class="menu-price">£5.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥓</div>
+        <h3>Bacon &amp; Egg Roll</h3>
+        <p>Fresh-baked roll with your choice of filling</p>
+      </div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍞</div>
+        <h3>Bobby Special Omelette</h3>
+        <p>A house favourite omelette with plenty of fillings</p>
+      </div>
+      <div class="menu-price">£6</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🫘</div>
+        <h3>Beans on Toast</h3>
+        <p>Classic comfort food done properly</p>
+      </div>
+      <div class="menu-price">£3</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥞</div>
+        <h3>Pancakes</h3>
+        <p>Fluffy stacked pancakes with syrup</p>
+      </div>
+      <div class="menu-price">£4.50</div>
+    </div>
+  </div>
+
+  <div id="mains" class="menu-grid" style="display:none">
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍗</div>
+        <h3>Famous Chicken Salad</h3>
+        <p>A Noshery staple — freshly prepared with house dressing</p>
+      </div>
+      <div class="menu-price">£7</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥘</div>
+        <h3>Chicken Curry</h3>
+        <p>Rich, warming curry served with rice</p>
+      </div>
+      <div class="menu-price">£7.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥧</div>
+        <h3>Shepherd's Pie</h3>
+        <p>Homemade with fresh vegetables and creamy mash</p>
+      </div>
+      <div class="menu-price">£7</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍖</div>
+        <h3>Ham, Egg, Chips &amp; Peas</h3>
+        <p>A British classic, cooked just right</p>
+      </div>
+      <div class="menu-price">£8</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍴</div>
+        <h3>Daily Special</h3>
+        <p>Ask the team what's on today — always made fresh</p>
+      </div>
+      <div class="menu-price">Ask us</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥗</div>
+        <h3>Sunday Roast</h3>
+        <p>Roast with all the trimmings — Sundays only</p>
+      </div>
+      <div class="menu-price">from £9</div>
+    </div>
+  </div>
+
+  <div id="drinks" class="menu-grid" style="display:none">
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">☕</div>
+        <h3>Fresh Coffee</h3>
+        <p>Americano, flat white, cappuccino & more</p>
+      </div>
+      <div class="menu-price">from £2</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🫖</div>
+        <h3>Pot of Tea</h3>
+        <p>Proper builder's tea — a Noshery must</p>
+      </div>
+      <div class="menu-price">£1.80</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥤</div>
+        <h3>Cold Drinks</h3>
+        <p>Juices, smoothies & soft drinks</p>
+      </div>
+      <div class="menu-price">from £1.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍰</div>
+        <h3>Cherry Pie &amp; Custard</h3>
+        <p>Warm slice of pie with a generous pour of custard</p>
+      </div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍞</div>
+        <h3>Toast &amp; Extras</h3>
+        <p>Extra toast, hash browns, sausages & more</p>
+      </div>
+      <div class="menu-price">from £1</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍦</div>
+        <h3>Desserts of the Day</h3>
+        <p>Ask the team — we always have something sweet</p>
+      </div>
+      <div class="menu-price">Ask us</div>
+    </div>
+  </div>
+
+  <p style="text-align:center; margin-top:2rem; color:var(--coffee); font-size:0.85rem;">
+    * Prices are indicative. Please ask the team for the current menu and specials.
+  </p>
+</section>
+
+<!-- HOURS & LOCATION -->
+<section class="info-section" id="hours">
+  <div class="info-block">
+    <h2>Opening Hours</h2>
+    <div class="hours-row"><span class="day">Monday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Tuesday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Wednesday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Thursday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Friday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Saturday</span><span class="time">6:00am – 5:00pm</span></div>
+    <div class="hours-row"><span class="day">Sunday</span><span class="time">6:00am – 5:00pm</span></div>
+  </div>
+  <div class="info-block">
+    <h2>Find Us</h2>
+    <div class="location-detail">
+      <span class="location-icon">📍</span>
+      <span>491A London Road, Isleworth<br>Hounslow, TW7 4DA<br><em>Opposite West Thames College</em></span>
+    </div>
+    <div class="location-detail">
+      <span class="location-icon">📞</span>
+      <span><a href="tel:02082328618">020 8232 8618</a></span>
+    </div>
+    <div class="location-detail">
+      <span class="location-icon">🚉</span>
+      <span>Isleworth station — 0.08 miles away<br>Bus stop directly outside</span>
+    </div>
+    <div class="location-detail">
+      <span class="location-icon">🅿️</span>
+      <span>Metered parking available outside</span>
+    </div>
+    <div class="map-placeholder">
+      <a href="https://maps.google.com/?q=491A+London+Road+Isleworth+TW7+4DA" target="_blank"
+         style="color:var(--gold); font-size:0.9rem;">
+        📍 Open in Google Maps →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="section-header fade-up">
+    <div class="section-tag">What People Say</div>
+    <h2>Customer Reviews</h2>
+    <p>Don't take our word for it.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"The cafe is spotless and the food is clean and tasty. Best cafe in Isleworth. Great value for money. HIGHLY RECOMMEND."</p>
+      <div class="reviewer">Happy Customer<br><span class="reviewer-source">Google Reviews</span></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Love this family-run caff, which does the best tea and has generous food servings. Can't fault the family and staff for their welcoming smiles."</p>
+      <div class="reviewer">Regular Customer<br><span class="reviewer-source">Google Reviews</span></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Great English breakfast! With £10 you get full! Beans, bacon and sausage are so delicious! Coffee isn't too bad either."</p>
+      <div class="reviewer">Verified Visitor<br><span class="reviewer-source">Google Reviews</span></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Excellent food & customer service, highly recommended café for every working person — great family atmosphere."</p>
+      <div class="reviewer">Local Regular<br><span class="reviewer-source">Google Reviews</span></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Absolutely wholesome breakfast. Everything was perfect down to the cup of tea! I need to come here more regularly."</p>
+      <div class="reviewer">New Fan<br><span class="reviewer-source">Google Reviews</span></div>
+    </div>
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Top selection of dinners with fresh veg. Long opening hours including Sunday lunchtime for a cheap and tasty roast. Excellent value for money."</p>
+      <div class="reviewer">Yell.com Review<br><span class="reviewer-source">Yell.com</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER CTA -->
+<section class="order-cta" id="order">
+  <h2>Fancy a Noshery?</h2>
+  <p>Order online for delivery or collection through Just Eat</p>
+  <a href="https://www.just-eat.co.uk/restaurants-the-nosherey-isleworth/menu" target="_blank" class="btn-white">Order on Just Eat</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">The Noshery</div>
+  <p>491A London Road, Isleworth, TW7 4DA<br>© 2025 The Noshery. All rights reserved.</p>
+  <ul class="foot-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#hours">Hours</a></li>
+    <li><a href="tel:02082328618">Call Us</a></li>
+    <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Sticky nav shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Menu tabs
+  function showTab(tab, btn) {
+    ['breakfast','mains','drinks'].forEach(id => {
+      document.getElementById(id).style.display = id === tab ? 'grid' : 'none';
+    });
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Scroll fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
