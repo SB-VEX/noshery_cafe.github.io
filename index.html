@@ -486,165 +486,216 @@
   </div>
   <div class="menu-tabs">
     <button class="tab-btn active" onclick="showTab('breakfast', this)">Breakfast</button>
-    <button class="tab-btn" onclick="showTab('mains', this)">Mains</button>
-    <button class="tab-btn" onclick="showTab('drinks', this)">Drinks &amp; Extras</button>
+    <button class="tab-btn" onclick="showTab('mains', this)">Lunches &amp; Mains</button>
+    <button class="tab-btn" onclick="showTab('drinks', this)">Sandwiches, Jackets &amp; Drinks</button>
   </div>
 
+  <!-- BREAKFAST TAB -->
   <div id="breakfast" class="menu-grid">
     <div class="menu-card">
       <div class="menu-card-info">
         <div class="menu-icon">🍳</div>
-        <h3>Full English Breakfast</h3>
-        <p>Eggs, bacon, sausage, beans, toast & all the trimmings</p>
+        <h3>The Big Nosh</h3>
+        <p>2 eggs, 2 bacon, mushrooms, sausage, tomatoes, 2 toast &amp; tea</p>
       </div>
-      <div class="menu-price">from £7</div>
+      <div class="menu-price">£7.80</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
         <div class="menu-icon">🥚</div>
-        <h3>Poached Eggs &amp; Hash Browns</h3>
-        <p>Perfectly poached eggs on toast with crispy hash browns</p>
+        <h3>Early Riser</h3>
+        <p>Egg, 2 bacon, 2 sausages, chips, beans, 2 toast &amp; tea</p>
+      </div>
+      <div class="menu-price">£7.90</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥦</div>
+        <h3>Veggie Breakfast</h3>
+        <p>2 eggs, chips, beans, mushrooms, tomatoes, hash browns &amp; tea</p>
+      </div>
+      <div class="menu-price">£7.90</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥓</div>
+        <h3>Full Monty</h3>
+        <p>2 eggs, 2 bacon, sausage, mushrooms, beans, black pudding, bubble, 2 toast &amp; tea</p>
+      </div>
+      <div class="menu-price">£8.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍞</div>
+        <h3>2 Eggs on Toast</h3>
+        <p>Poached or scrambled, served on toast</p>
+      </div>
+      <div class="menu-price">£3.50</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🧆</div>
+        <h3>Build Your Own Breakfast</h3>
+        <p>Egg £1 · Bacon £1.80 · Sausage £1.10 · Hash Browns £1.80 · Mushrooms £1.10 · Tomatoes £1.10 · Bubble £2.00 · Black Pudding £1.10</p>
+      </div>
+      <div class="menu-price">from £1</div>
+    </div>
+  </div>
+
+  <!-- MAINS TAB -->
+  <div id="mains" class="menu-grid" style="display:none">
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍖</div>
+        <h3>Roast Lamb</h3>
+        <p>Served with roast potatoes &amp; 2 vegetables</p>
+      </div>
+      <div class="menu-price">£7.45</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🥩</div>
+        <h3>Roast Beef</h3>
+        <p>Served with roast potatoes &amp; 2 vegetables</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍗</div>
+        <h3>Nosh Chicken</h3>
+        <p>Served with chips &amp; salad</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍛</div>
+        <h3>Chicken Curry &amp; Rice</h3>
+        <p>Rich, warming curry served with fluffy rice</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🌶️</div>
+        <h3>Chilli Con Carne &amp; Rice</h3>
+        <p>Hearty chilli with rice</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍝</div>
+        <h3>Spaghetti Bolognese</h3>
+        <p>Classic spaghetti bolognese</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🫕</div>
+        <h3>Lasagna &amp; Chips</h3>
+        <p>Homemade lasagna with chips</p>
+      </div>
+      <div class="menu-price">£6.95</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍳</div>
+        <h3>Ham, Egg, Chips &amp; Peas</h3>
+        <p>A British classic done properly</p>
       </div>
       <div class="menu-price">£5.50</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🥓</div>
-        <h3>Bacon &amp; Egg Roll</h3>
-        <p>Fresh-baked roll with your choice of filling</p>
+        <div class="menu-icon">🥩</div>
+        <h3>Gammon Steak</h3>
+        <p>With egg, chips, peas &amp; pineapple slice</p>
       </div>
-      <div class="menu-price">£3.50</div>
+      <div class="menu-price">£6.70</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🍞</div>
-        <h3>Bobby Special Omelette</h3>
-        <p>A house favourite omelette with plenty of fillings</p>
+        <div class="menu-icon">🔥</div>
+        <h3>Mixed Grill</h3>
+        <p>Lamb chop, liver, bacon, sausage, egg, tomatoes, chips, peas &amp; mushrooms</p>
       </div>
-      <div class="menu-price">£6</div>
+      <div class="menu-price">£8.95</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🫘</div>
-        <h3>Beans on Toast</h3>
-        <p>Classic comfort food done properly</p>
+        <div class="menu-icon">🍔</div>
+        <h3>Burgers</h3>
+        <p>Burger · Cheeseburger · Veggie · Half Pounder · Egg Cheese &amp; Bacon · Chicken — all served with chips &amp; garnish</p>
       </div>
-      <div class="menu-price">£3</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🥞</div>
-        <h3>Pancakes</h3>
-        <p>Fluffy stacked pancakes with syrup</p>
-      </div>
-      <div class="menu-price">£4.50</div>
-    </div>
-  </div>
-
-  <div id="mains" class="menu-grid" style="display:none">
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🍗</div>
-        <h3>Famous Chicken Salad</h3>
-        <p>A Noshery staple — freshly prepared with house dressing</p>
-      </div>
-      <div class="menu-price">£7</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🥘</div>
-        <h3>Chicken Curry</h3>
-        <p>Rich, warming curry served with rice</p>
-      </div>
-      <div class="menu-price">£7.50</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🥧</div>
-        <h3>Shepherd's Pie</h3>
-        <p>Homemade with fresh vegetables and creamy mash</p>
-      </div>
-      <div class="menu-price">£7</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🍖</div>
-        <h3>Ham, Egg, Chips &amp; Peas</h3>
-        <p>A British classic, cooked just right</p>
-      </div>
-      <div class="menu-price">£8</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🍴</div>
-        <h3>Daily Special</h3>
-        <p>Ask the team what's on today — always made fresh</p>
-      </div>
-      <div class="menu-price">Ask us</div>
+      <div class="menu-price">£4.50–£5.75</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
         <div class="menu-icon">🥗</div>
-        <h3>Sunday Roast</h3>
-        <p>Roast with all the trimmings — Sundays only</p>
+        <h3>Salads</h3>
+        <p>Chicken · Ham · Cheese · Tuna</p>
       </div>
-      <div class="menu-price">from £9</div>
+      <div class="menu-price">£5.45</div>
     </div>
   </div>
 
+  <!-- SANDWICHES, JACKETS, DRINKS TAB -->
   <div id="drinks" class="menu-grid" style="display:none">
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">☕</div>
-        <h3>Fresh Coffee</h3>
-        <p>Americano, flat white, cappuccino & more</p>
+        <div class="menu-icon">🥪</div>
+        <h3>Sandwiches</h3>
+        <p>Bacon · Sausage · Egg · Egg &amp; Bacon · Egg &amp; Sausage · Tuna · Ham · Cheese · Chicken. Add 30p for crusty bread or toasted.</p>
       </div>
-      <div class="menu-price">from £2</div>
+      <div class="menu-price">£2.60–£4.10</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🫖</div>
-        <h3>Pot of Tea</h3>
-        <p>Proper builder's tea — a Noshery must</p>
+        <div class="menu-icon">🫓</div>
+        <h3>Rolls</h3>
+        <p>Same fillings as sandwiches available in a roll</p>
       </div>
-      <div class="menu-price">£1.80</div>
+      <div class="menu-price">£2.10–£4.40</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🥤</div>
-        <h3>Cold Drinks</h3>
-        <p>Juices, smoothies & soft drinks</p>
+        <div class="menu-icon">🥔</div>
+        <h3>Jacket Potatoes</h3>
+        <p>Cheese £4.70 · Tuna £5.00 · Beans £4.00 · Coleslaw £4.00 · Bolognese £5.20 · Chilli £5.20 · Chicken Curry £5.20</p>
       </div>
-      <div class="menu-price">from £1.50</div>
+      <div class="menu-price">from £4.00</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-info">
+        <div class="menu-icon">🍳</div>
+        <h3>Omelettes</h3>
+        <p>Cheese · Mushroom · Ham · Bacon · Spanish · Plain (£5.00). Extra filling +80p. All served with chips, peas or salad.</p>
+      </div>
+      <div class="menu-price">£5.00–£5.95</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
         <div class="menu-icon">🍰</div>
-        <h3>Cherry Pie &amp; Custard</h3>
-        <p>Warm slice of pie with a generous pour of custard</p>
+        <h3>Desserts</h3>
+        <p>Apple Pie · Cherry Pie · Baked Jam Roll — all served with ice cream or custard. Ice Cream £1.75.</p>
       </div>
       <div class="menu-price">£3.50</div>
     </div>
     <div class="menu-card">
       <div class="menu-card-info">
-        <div class="menu-icon">🍞</div>
-        <h3>Toast &amp; Extras</h3>
-        <p>Extra toast, hash browns, sausages & more</p>
+        <div class="menu-icon">☕</div>
+        <h3>Hot &amp; Cold Drinks</h3>
+        <p>Tea £1.50 · Coffee £2.00 · Hot Chocolate £2.00 · Cappuccino £2.45 · Iced Coffee £3.00 · Milkshakes £2.50 · Ribena £1.10 · Orange Juice £1.60 · Water £0.95</p>
       </div>
-      <div class="menu-price">from £1</div>
-    </div>
-    <div class="menu-card">
-      <div class="menu-card-info">
-        <div class="menu-icon">🍦</div>
-        <h3>Desserts of the Day</h3>
-        <p>Ask the team — we always have something sweet</p>
-      </div>
-      <div class="menu-price">Ask us</div>
+      <div class="menu-price">from £0.95</div>
     </div>
   </div>
 
   <p style="text-align:center; margin-top:2rem; color:var(--coffee); font-size:0.85rem;">
-    * Prices are indicative. Please ask the team for the current menu and specials.
+    * Menu and prices correct at time of photography. Please ask the team for today's specials.
   </p>
 </section>
 
