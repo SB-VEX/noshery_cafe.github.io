@@ -290,7 +290,7 @@ const JSONBIN_ID  = '69d227fe856a682189ff33a6';
 const JSONBIN_KEY = '$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS';
 /* ══════════════════════════════════════ */
 
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/69d16cc736566621a87c8aca';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/69d227fe856a682189ff33a6';
 const HEADERS = { 'Content-Type':'application/json', 'X-Master-Key': '$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS' };
 
 let orders = [];
@@ -383,7 +383,7 @@ function initDashboard(){
 
 /* ── Fetch from JSONBin ── */
 async function fetchOrders(){
-  if(JSONBIN_ID==='69d16cc736566621a87c8aca'){
+  if(JSONBIN_ID==='69d227fe856a682189ff33a6'){
     setConn('error','⚠️ JSONBin not set up yet — see SETUP_GUIDE.txt to connect. Orders will work once configured.');
     return;
   }
@@ -424,7 +424,7 @@ function setConn(type,msg){
 
 /* ── Save status back to JSONBin ── */
 async function saveOrders(){
-  if(JSONBIN_ID==='69d16cc736566621a87c8aca')return;
+  if(JSONBIN_ID==='69d227fe856a682189ff33a6')return;
   try{await fetch(JSONBIN_URL,{method:'PUT',headers:HEADERS,body:JSON.stringify(orders)});}catch(e){}
 }
 
