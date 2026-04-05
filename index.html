@@ -598,6 +598,52 @@ footer{
   .hero-h{font-size:clamp(1.9rem,8vw,2.8rem);}
   .wc{width:150px;}
 }
+
+.map-wrap {
+  position:relative;
+  height:320px;
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:1.2rem;
+  border:1px solid var(--border);
+}
+.map-btn {
+  position:absolute;
+  bottom:1rem;right:1rem;
+  background:var(--surface);
+  color:var(--accent);
+  font-family:"Sora",sans-serif;
+  font-size:.75rem;font-weight:700;
+  padding:.5rem 1rem;border-radius:100px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);
+  transition:all .2s;
+  text-decoration:none;
+  border:1px solid var(--border);
+}
+.map-btn:hover{background:var(--accent);color:#fff;transform:translateY(-1px);}
+
+.map-wrap {
+  position:relative;
+  height:320px;
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:1.2rem;
+  border:1px solid var(--border);
+  background:var(--bg3);
+}
+.map-wrap iframe { transition:filter .4s; }
+[data-theme="dark"] .map-wrap iframe { filter:invert(90%) hue-rotate(180deg); }
+.map-btn {
+  position:absolute;bottom:1rem;right:1rem;
+  background:var(--surface);color:var(--accent);
+  font-family:'Sora',sans-serif;
+  font-size:.75rem;font-weight:700;
+  padding:.5rem 1rem;border-radius:100px;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+  transition:all .2s;text-decoration:none;
+  border:1px solid var(--border);
+}
+.map-btn:hover{background:var(--accent);color:#fff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,132,255,.3);}
 </style>
 </head>
 <body>
@@ -737,15 +783,29 @@ footer{
   <section class="section" id="visit-section">
     <span class="section-label fade-up">Find us</span>
     <h2 class="section-title fade-up d1">Come <em>visit.</em></h2>
-    <div class="hours-block fade-up d1">
+
+    <div class="map-wrap fade-up d1">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.12!2d-0.33674!3d51.47281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760d9e1c2c4e71%3A0x3e4a9c3d56f00a9b!2s491A%20London%20Rd%2C%20Isleworth%20TW7%204DA!5e0!3m2!1sen!2suk!4v1700000000000"
+        width="100%" height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="The Noshery location">
+      </iframe>
+      <a class="map-btn" href="https://maps.google.com/?q=491A+London+Road+Isleworth+TW7+4DA" target="_blank">Open in Google Maps →</a>
+    </div>
+
+    <div class="hours-block fade-up d2">
       <div class="hr"><span class="hr-day">Mon – Fri</span><span class="hr-time">6:00am – 4:30pm <span class="hr-now">Open</span></span></div>
       <div class="hr"><span class="hr-day">Saturday</span><span class="hr-time">7:00am – 4:30pm</span></div>
       <div class="hr"><span class="hr-day">Sunday</span><span class="hr-time">6:00am – 4:30pm</span></div>
     </div>
-    <div class="info-list fade-up d2">
+
+    <div class="info-list fade-up d3">
       <div class="il"><span class="il-icon">📍</span><div><span class="il-label">Address</span><span class="il-val">491A London Road, Isleworth TW7 4DA</span></div></div>
       <div class="il"><span class="il-icon">📞</span><div><span class="il-label">Phone</span><span class="il-val"><a href="tel:02082328618">020 8232 8618</a></span></div></div>
-      <div class="il"><span class="il-icon">🗺️</span><div><span class="il-label">Directions</span><span class="il-val"><a href="https://maps.google.com/?q=491A+London+Road+Isleworth" target="_blank">Open in Google Maps →</a></span></div></div>
     </div>
   </section>
 
