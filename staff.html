@@ -240,9 +240,7 @@ button{font-family:var(--font);cursor:pointer;}input{font-family:var(--font);}
   </nav>
 
   <!-- Connection status -->
-  <div class="conn-bar checking" id="connBar">
-    <div class="conn-left"><span class="conn-dot"></span><span id="connText">⏳ Connecting to order system...</span></div>
-  </div>
+  
 
   <div id="notifBanner" class="notif-banner" style="display:none">
     <span>🔔 Enable notifications to get alerts even when this tab is in the background.</span>
@@ -384,7 +382,7 @@ function initDashboard(){
 /* ── Fetch from JSONBin ── */
 async function fetchOrders(){
   if(JSONBIN_ID==='69d227fe856a682189ff33a6'){
-    setConn('error','⚠️ JSONBin not set up yet — see SETUP_GUIDE.txt to connect. Orders will work once configured.');
+    //setConn('⚠️ JSONBin not set up yet — see SETUP_GUIDE.txt to connect. Orders will work once configured.');
     return;
   }
   try{
@@ -392,7 +390,7 @@ async function fetchOrders(){
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
     const incoming=Array.isArray(data.record)?data.record:[];
-    setConn('connected',`✅ Connected · Last checked: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`);
+    //setConn(`✅ Connected · Last checked: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`);
     // detect new orders
     incoming.forEach(o=>{
       if(!knownRefs.has(o.ref)){
@@ -412,7 +410,7 @@ async function fetchOrders(){
     orders=merged;
     renderOrders();
   }catch(e){
-    setConn('error',`❌ Connection error — check your JSONBin credentials. (${e.message})`);
+    //setConn(`❌ Connection error — check your JSONBin credentials. (${e.message})`);
   }
 }
 
