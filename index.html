@@ -342,7 +342,7 @@ const JSONBIN_KEY = '$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOO
 /* ══════════════════════════════════════ */
 
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-const HEADERS = { 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY };
+const HEADERS = { 'Content-Type':'application/json', 'X-Master-Key': '$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS', 'X-Bin-Meta': 'false' };
 
 let cart = {};
 
@@ -427,7 +427,7 @@ async function placeOrder(){
   const newOrder={ref,name,phone,items,total,pickup:time,notes:document.getElementById('specialReq').value.trim(),status:'new',receivedAt:Date.now()};
   try{
     /* 1 — read current orders */
-    const getRes=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
+    const getRes=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':'$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS','X-Bin-Meta':'false'}});
     const getData=await getRes.json();
     const existing=Array.isArray(getData.record)?getData.record:[];
     /* 2 — add new order */
