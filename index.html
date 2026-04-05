@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Noshery</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='42' fill='%230A84FF'/%3E%3Cline x1='24' y1='18' x2='24' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='18' x2='31' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='38' y1='18' x2='38' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='34' x2='31' y2='66' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M52 18 Q58 24 58 32 L55 34 L55 66' stroke='white' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -647,6 +648,11 @@ footer{
 .map-btn:hover{background:var(--accent);color:#fff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,132,255,.3);}
 
 [data-theme="warm"] .nav-logo svg circle { fill: #E8900A; }
+
+.btn-receipt{width:100%;padding:.78rem;border-radius:10px;background:var(--accent);color:#fff;font-size:.82rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;}
+.btn-receipt:hover{background:var(--accent2);transform:translateY(-1px);}
+.btn-receipt-ghost{width:100%;padding:.78rem;border-radius:10px;background:var(--bg2);color:var(--text2);font-size:.82rem;font-weight:600;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;}
+.btn-receipt-ghost:hover{background:var(--bg3);}
 </style>
 </head>
 <body>
@@ -887,7 +893,11 @@ footer{
       <span class="conf-e">🎉</span>
       <div class="conf-h">Order placed!</div>
       <div class="conf-ref" id="confRef">Order #NOS-0000</div>
-      <p class="conf-sub">Your order has been received. We'll have it ready at <strong>491A London Road</strong>. Questions? Call <a href="tel:02082328618" style="color:var(--accent)">020 8232 8618</a>.</p>
+      <p class="conf-sub">Your order has been received. We'll have it ready at <strong>491A London Road, Isleworth</strong>. Questions? Call <a href="tel:02082328618" style="color:var(--accent)">020 8232 8618</a>.</p>
+      <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.2rem;">
+        <button class="btn-receipt" id="btnPdf" onclick="downloadPDF()">⬇ Download Receipt (PDF)</button>
+        <button class="btn-receipt-ghost" id="btnEmail" onclick="emailReceipt()">✉ Email yourself a copy</button>
+      </div>
       <button class="btn-done" onclick="confirmDone()">Back to menu</button>
     </div>
   </div>
@@ -1012,13 +1022,112 @@ async function placeOrder(){
   document.getElementById('cForm').style.display='none';
   document.getElementById('cConfirm').style.display='block';
 }
+let lastOrder = null;
+
 function confirmDone(){
   cart={};updateCart();
   document.getElementById('cForm').style.display='block';
   document.getElementById('cConfirm').style.display='none';
   ['custName','custPhone','specialReq'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pickupTime').value='';
+  lastOrder=null;
   closeCheckout();
+}
+
+function downloadPDF(){
+  if(!lastOrder) return;
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({unit:'mm',format:'a6',orientation:'portrait'});
+  const W = doc.internal.pageSize.getWidth();
+  let y = 14;
+  // Header
+  doc.setFillColor(10,132,255);
+  doc.roundedRect(8,y,W-16,18,3,3,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(13);
+  doc.text('The Noshery',W/2,y+7,{align:'center'});
+  doc.setFontSize(7);
+  doc.setFont('helvetica','normal');
+  doc.text('491A London Road, Isleworth TW7 4DA',W/2,y+13,{align:'center'});
+  y+=26;
+  // Order ref
+  doc.setTextColor(30,30,30);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.text(lastOrder.ref, W/2, y, {align:'center'});
+  y+=5;
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(8);
+  doc.setTextColor(110,110,115);
+  doc.text(new Date(lastOrder.receivedAt).toLocaleString('en-GB'), W/2, y, {align:'center'});
+  y+=8;
+  // Divider
+  doc.setDrawColor(210,210,215);
+  doc.line(10,y,W-10,y);
+  y+=6;
+  // Customer
+  doc.setTextColor(30,30,30);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(8);
+  doc.text('Customer', 10, y);
+  doc.setFont('helvetica','normal');
+  doc.text(lastOrder.name, W-10, y, {align:'right'});
+  y+=5;
+  doc.setFont('helvetica','bold');
+  doc.text('Pickup', 10, y);
+  doc.setFont('helvetica','normal');
+  doc.text(lastOrder.pickup, W-10, y, {align:'right'});
+  y+=8;
+  // Items header
+  doc.setDrawColor(210,210,215);
+  doc.line(10,y,W-10,y);
+  y+=6;
+  doc.setFont('helvetica','bold');
+  doc.text('Item', 10, y);
+  doc.text('Price', W-10, y, {align:'right'});
+  y+=5;
+  doc.setFont('helvetica','normal');
+  lastOrder.items.forEach(item=>{
+    const qty = item.qty>1 ? item.qty+'x ' : '';
+    doc.text(qty+item.name, 10, y);
+    doc.text('£'+(item.price*(item.qty||1)).toFixed(2), W-10, y, {align:'right'});
+    y+=5;
+  });
+  y+=2;
+  // Total
+  doc.setDrawColor(210,210,215);
+  doc.line(10,y,W-10,y);
+  y+=6;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.text('Total', 10, y);
+  doc.text('£'+lastOrder.total.toFixed(2), W-10, y, {align:'right'});
+  y+=10;
+  // Footer
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(7);
+  doc.setTextColor(150,150,155);
+  doc.text('Thank you for your order!', W/2, y, {align:'center'});
+  y+=4;
+  doc.text('020 8232 8618', W/2, y, {align:'center'});
+  doc.save('Noshery-'+lastOrder.ref+'.pdf');
+}
+
+function emailReceipt(){
+  if(!lastOrder) return;
+  const items = lastOrder.items.map(i=>`${i.qty||1}x ${i.name} - £${(i.price*(i.qty||1)).toFixed(2)}`).join('\n');
+  const sub = encodeURIComponent('Your Noshery Order - '+lastOrder.ref);
+  const bod = encodeURIComponent(
+    'Order: '+lastOrder.ref+'\n'+
+    'Name: '+lastOrder.name+'\n'+
+    'Pickup: '+lastOrder.pickup+'\n\n'+
+    'Items:\n'+items+'\n\n'+
+    'Total: £'+lastOrder.total.toFixed(2)+'\n\n'+
+    'The Noshery, 491A London Road, Isleworth TW7 4DA\n'+
+    'Tel: 020 8232 8618'
+  );
+  window.open('mailto:?subject='+sub+'&body='+bod);
 }
 </script>
 </body>
