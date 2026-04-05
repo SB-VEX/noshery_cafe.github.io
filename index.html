@@ -1021,6 +1021,7 @@ async function placeOrder(){
   document.getElementById('confRef').textContent=`Order #${ref}`;
   document.getElementById('cForm').style.display='none';
   document.getElementById('cConfirm').style.display='block';
+  lastOrder={ref,name,phone,items,total:parseFloat(total.toFixed(2)),pickup:time,notes:document.getElementById('specialReq').value.trim(),receivedAt:Date.now()};
 }
 let lastOrder = null;
 
