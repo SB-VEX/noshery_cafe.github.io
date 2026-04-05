@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Noshery – Staff</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -263,6 +264,35 @@ input{font-family:'Sora',sans-serif;}
 @media(max-width:420px){
   .stat{min-width:100%;}
 }
+
+.view-toggle{display:flex;gap:.3rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-left:auto;}
+.vt-btn{font-size:.72rem;font-weight:600;padding:.32rem .75rem;border-radius:7px;border:none;background:none;color:var(--text3);transition:all .2s;}
+.vt-btn.on{background:var(--surface);color:var(--text);box-shadow:0 1px 4px var(--shadow);}
+.analytics-view{display:none;flex-direction:column;gap:1.5rem;padding-bottom:2rem;}
+.analytics-view.show{display:flex;}
+.an-grid{display:flex;gap:1rem;flex-wrap:wrap;}
+.an-card{flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1rem;}
+.an-card-label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:.4rem;}
+.an-card-val{font-size:1.5rem;font-weight:700;color:var(--text);line-height:1;}
+.an-card-sub{font-size:.7rem;color:var(--text3);margin-top:.3rem;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.2rem;}
+.chart-title{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:1rem;}
+.chart-wrap{position:relative;height:200px;}
+.orders-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.ot-head{padding:.9rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ot-title{font-size:.8rem;font-weight:700;color:var(--text);}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg2);}
+th{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:.6rem 1rem;text-align:left;border-bottom:1px solid var(--border);}
+td{font-size:.78rem;color:var(--text2);padding:.65rem 1rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg2);}
+.td-ref{font-weight:700;color:var(--text);font-size:.75rem;}
+.td-status{display:inline-flex;align-items:center;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.18rem .55rem;border-radius:100px;}
+.td-status.new{background:rgba(255,159,10,.1);color:var(--warn);}
+.td-status.preparing{background:rgba(10,132,255,.1);color:var(--blue);}
+.td-status.ready{background:rgba(48,209,88,.1);color:var(--green);}
+.td-status.collected{background:var(--bg3);color:var(--text3);}
 </style>
 </head>
 <body>
@@ -330,6 +360,10 @@ input{font-family:'Sora',sans-serif;}
     <div style="display:flex;align-items:center;gap:.8rem;">
       <span class="ls-time" id="lastUpdate">Starting…</span>
       <button class="btn-demo" onclick="addDemo()">+ Test order</button>
+      <div class="view-toggle">
+        <button class="vt-btn on" id="vt-orders" onclick="switchView('orders')">Orders</button>
+        <button class="vt-btn" id="vt-analytics" onclick="switchView('analytics')">Analytics</button>
+      </div>
     </div>
   </div>
 
@@ -342,15 +376,73 @@ input{font-family:'Sora',sans-serif;}
   </div>
 
   <div class="orders-area">
-    <div class="filter-tabs">
-      <button class="ft on" onclick="setFilter('all',this)">All <span class="ft-c" id="fc-all">0</span></button>
-      <button class="ft"    onclick="setFilter('new',this)">New <span class="ft-c" id="fc-new">0</span></button>
-      <button class="ft"    onclick="setFilter('preparing',this)">Preparing <span class="ft-c" id="fc-prep">0</span></button>
-      <button class="ft"    onclick="setFilter('ready',this)">Ready <span class="ft-c" id="fc-rdy">0</span></button>
-      <button class="ft"    onclick="setFilter('collected',this)">Collected <span class="ft-c" id="fc-col">0</span></button>
+    <!-- ORDERS VIEW -->
+    <div id="ordersView" style="display:block;">
+      <div class="filter-tabs">
+        <button class="ft on" onclick="setFilter('all',this)">All <span class="ft-c" id="fc-all">0</span></button>
+        <button class="ft"    onclick="setFilter('new',this)">New <span class="ft-c" id="fc-new">0</span></button>
+        <button class="ft"    onclick="setFilter('preparing',this)">Preparing <span class="ft-c" id="fc-prep">0</span></button>
+        <button class="ft"    onclick="setFilter('ready',this)">Ready <span class="ft-c" id="fc-rdy">0</span></button>
+        <button class="ft"    onclick="setFilter('collected',this)">Collected <span class="ft-c" id="fc-col">0</span></button>
+      </div>
+      <div class="orders-list" id="ordersList">
+        <div class="empty-state"><span class="es-e">🛎️</span><div class="es-h">No orders yet</div><p class="es-p">Orders from customers appear here automatically.</p></div>
+      </div>
     </div>
-    <div class="orders-list" id="ordersList">
-      <div class="empty-state"><span class="es-e">🛎️</span><div class="es-h">No orders yet</div><p class="es-p">Orders from customers appear here automatically.</p></div>
+
+    <!-- ANALYTICS VIEW -->
+    <div class="analytics-view" id="analyticsView">
+
+      <!-- Summary cards -->
+      <div class="an-grid">
+        <div class="an-card"><div class="an-card-label">Total Orders</div><div class="an-card-val" id="an-total">0</div><div class="an-card-sub">all time</div></div>
+        <div class="an-card"><div class="an-card-label">Revenue</div><div class="an-card-val" id="an-rev">£0</div><div class="an-card-sub">all time</div></div>
+        <div class="an-card"><div class="an-card-label">Avg Order</div><div class="an-card-val" id="an-avg">£0</div><div class="an-card-sub">per order</div></div>
+        <div class="an-card"><div class="an-card-label">Completion</div><div class="an-card-val" id="an-comp">0%</div><div class="an-card-sub">collected rate</div></div>
+      </div>
+
+      <!-- Revenue bar chart -->
+      <div class="chart-card">
+        <div class="chart-title">Revenue by hour (today)</div>
+        <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+      </div>
+
+      <!-- Orders by status pie + avg timing line -->
+      <div class="an-grid" style="align-items:flex-start;">
+        <div class="chart-card" style="flex:1;min-width:200px;">
+          <div class="chart-title">Orders by status</div>
+          <div class="chart-wrap" style="height:160px;"><canvas id="statusChart"></canvas></div>
+        </div>
+        <div class="chart-card" style="flex:1;min-width:200px;">
+          <div class="chart-title">Top items ordered</div>
+          <div class="chart-wrap" style="height:160px;"><canvas id="itemsChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Full orders table -->
+      <div class="orders-table-wrap">
+        <div class="ot-head">
+          <span class="ot-title">All orders</span>
+          <span id="an-table-count" style="font-size:.72rem;color:var(--text3);"></span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th>Ref</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Pickup</th>
+              <th>Received</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody id="ordersTableBody">
+              <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text3);">No orders yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -573,6 +665,189 @@ function startClock(){function t(){document.getElementById('clock').textContent=
 
 /* Time ago */
 function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'just now';if(s<3600){const m=Math.floor(s/60);return `${m}m ago`;}return `${Math.floor(s/3600)}h ago`;}
+
+
+/* ── View switching ── */
+function switchView(v){
+  document.getElementById('vt-orders').classList.toggle('on', v==='orders');
+  document.getElementById('vt-analytics').classList.toggle('on', v==='analytics');
+  document.getElementById('ordersView').style.display = v==='orders' ? 'block' : 'none';
+  const av = document.getElementById('analyticsView');
+  av.classList.toggle('show', v==='analytics');
+  if(v==='analytics') renderAnalytics();
+}
+
+/* ── Analytics rendering ── */
+let revenueChartInst=null, statusChartInst=null, itemsChartInst=null;
+
+function renderAnalytics(){
+  if(!orders.length){
+    document.getElementById('an-total').textContent='0';
+    document.getElementById('an-rev').textContent='£0';
+    document.getElementById('an-avg').textContent='£0';
+    document.getElementById('an-comp').textContent='0%';
+    renderOrdersTable();
+    return;
+  }
+
+  const total = orders.length;
+  const rev = orders.reduce((s,o)=>s+Number(o.total||0),0);
+  const collected = orders.filter(o=>o.status==='collected').length;
+
+  document.getElementById('an-total').textContent = total;
+  document.getElementById('an-rev').textContent = '£'+rev.toFixed(2);
+  document.getElementById('an-avg').textContent = total ? '£'+(rev/total).toFixed(2) : '£0';
+  document.getElementById('an-comp').textContent = total ? Math.round((collected/total)*100)+'%' : '0%';
+
+  renderRevenueChart();
+  renderStatusChart();
+  renderItemsChart();
+  renderOrdersTable();
+}
+
+function getChartColors(){
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  return {
+    grid: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+    text: isDark ? '#98989D' : '#6E6E73',
+    accent: '#0A84FF',
+    green: '#30D158',
+    warn: '#FF9F0A',
+    red: '#FF453A',
+    purple: '#BF5AF2',
+  };
+}
+
+function renderRevenueChart(){
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  const c = getChartColors();
+  const now = new Date();
+  const hours = Array.from({length:12},(_, i)=>{
+    const h = new Date(now);
+    h.setHours(now.getHours()-11+i, 0, 0, 0);
+    return h;
+  });
+  const labels = hours.map(h=>h.getHours().toString().padStart(2,'0')+':00');
+  const data = hours.map(h=>{
+    const hEnd = new Date(h); hEnd.setHours(h.getHours()+1);
+    return orders
+      .filter(o=>{ const t=new Date(o.receivedAt); return t>=h && t<hEnd; })
+      .reduce((s,o)=>s+Number(o.total||0),0);
+  });
+  if(revenueChartInst) revenueChartInst.destroy();
+  revenueChartInst = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'Revenue (£)',
+        data,
+        backgroundColor:c.accent+'33',
+        borderColor:c.accent,
+        borderWidth:1.5,
+        borderRadius:4,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10}}},
+        y:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10},callback:v=>'£'+v}}
+      }
+    }
+  });
+}
+
+function renderStatusChart(){
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  const c = getChartColors();
+  const counts = {New:0,Preparing:0,Ready:0,Collected:0};
+  orders.forEach(o=>{
+    if(o.status==='new') counts.New++;
+    else if(o.status==='preparing') counts.Preparing++;
+    else if(o.status==='ready') counts.Ready++;
+    else if(o.status==='collected') counts.Collected++;
+  });
+  if(statusChartInst) statusChartInst.destroy();
+  statusChartInst = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:Object.keys(counts),
+      datasets:[{
+        data:Object.values(counts),
+        backgroundColor:[c.warn+'BB',c.accent+'BB',c.green+'BB','#98989D55'],
+        borderColor:[c.warn,c.accent,c.green,'#98989D'],
+        borderWidth:1.5,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{color:c.text,font:{size:10},boxWidth:10,padding:8}}}
+    }
+  });
+}
+
+function renderItemsChart(){
+  const ctx = document.getElementById('itemsChart').getContext('2d');
+  const c = getChartColors();
+  const itemCounts = {};
+  orders.forEach(o=>{
+    (o.items||[]).forEach(i=>{
+      itemCounts[i.name] = (itemCounts[i.name]||0) + (i.qty||1);
+    });
+  });
+  const sorted = Object.entries(itemCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if(itemsChartInst) itemsChartInst.destroy();
+  if(!sorted.length) return;
+  itemsChartInst = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:sorted.map(x=>x[0].split(' ').slice(0,2).join(' ')),
+      datasets:[{
+        label:'Ordered',
+        data:sorted.map(x=>x[1]),
+        backgroundColor:c.green+'44',
+        borderColor:c.green,
+        borderWidth:1.5,
+        borderRadius:4,
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{color:c.grid},ticks:{color:c.text,font:{size:10},stepSize:1}},
+        y:{grid:{display:false},ticks:{color:c.text,font:{size:9}}}
+      }
+    }
+  });
+}
+
+function renderOrdersTable(){
+  const tbody = document.getElementById('ordersTableBody');
+  document.getElementById('an-table-count').textContent = orders.length + ' orders';
+  if(!orders.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text3);">No orders yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = [...orders].reverse().map(o=>{
+    const total = Number(o.total)||o.items.reduce((s,i)=>s+(i.price*(i.qty||1)),0);
+    const time = new Date(o.receivedAt).toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
+    const itemsList = (o.items||[]).map(i=>(i.qty>1?i.qty+'x ':'')+i.name).join(', ');
+    const status = o.status||'new';
+    return '<tr>'+
+      '<td class="td-ref">'+o.ref+'</td>'+
+      '<td>'+o.name+'<br><span style="font-size:.68rem;color:var(--text3);">'+o.phone+'</span></td>'+
+      '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+itemsList+'">'+itemsList+'</td>'+
+      '<td style="font-weight:700;color:var(--text);">£'+total.toFixed(2)+'</td>'+
+      '<td>'+o.pickup+'</td>'+
+      '<td style="white-space:nowrap;">'+time+'</td>'+
+      '<td><span class="td-status '+status+'">'+status+'</span></td>'+
+    '</tr>';
+  }).join('');
+}
 
 document.addEventListener('click',()=>{try{initAudio();}catch(e){}},{once:true});
 </script>
