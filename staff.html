@@ -389,7 +389,7 @@ async function fetchOrders(){
     const res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':'$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS'}});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
-    const incoming=Array.isArray(data.record)?data.record:[];
+    const incoming=Array.isArray(data)?data:(Array.isArray(data.record)?data.record:[]);
     //setConn(`✅ Connected · Last checked: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`);
     // detect new orders
     incoming.forEach(o=>{
