@@ -251,6 +251,71 @@ tr:hover td{background:var(--bg2);}
   .an-grid{flex-direction:column;}
 }
 @media(max-width:420px){.stat{min-width:100%;}}
+
+/* ── Better login panel ── */
+.lp-form{border-radius:0;position:relative;}
+.lp-form::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--a),var(--g));}
+
+/* ── Improved order cards ── */
+.oc{border-radius:18px;transition:all .3s var(--spring);}
+.oc[data-status=new]{border-left:4px solid var(--w);box-shadow:0 0 0 0 rgba(255,159,10,.0);}
+.oc[data-status=new]:hover{box-shadow:0 8px 32px rgba(255,159,10,.15);}
+.oc[data-status=preparing]{border-left:4px solid var(--bl);}
+.oc[data-status=preparing]:hover{box-shadow:0 8px 32px rgba(10,132,255,.15);}
+.oc[data-status=ready]{border-left:4px solid var(--g);}
+.oc[data-status=ready]:hover{box-shadow:0 8px 32px rgba(48,209,88,.18);}
+
+/* ── Improved stat cards ── */
+.stat{position:relative;overflow:hidden;}
+.stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--a);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--spring);}
+.stat:hover::after{transform:scaleX(1);}
+.stat:nth-child(1)::after{background:var(--w);}
+.stat:nth-child(2)::after{background:var(--bl);}
+.stat:nth-child(3)::after{background:var(--g);}
+.stat:nth-child(4)::after{background:var(--t3);}
+.stat:nth-child(5)::after{background:var(--a);}
+
+/* ── Better analytics cards ── */
+.an-card{position:relative;overflow:hidden;}
+.an-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 14px 14px;}
+.an-card:nth-child(1)::before{background:var(--w);}
+.an-card:nth-child(2)::before{background:var(--g);}
+.an-card:nth-child(3)::before{background:var(--a);}
+.an-card:nth-child(4)::before{background:var(--r);}
+.an-val{font-size:1.65rem;font-weight:800;background:linear-gradient(135deg,var(--text),var(--t2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ── Filter tab active glow ── */
+.ft.on{box-shadow:0 4px 14px var(--sh2),0 0 0 3px rgba(10,132,255,.08);}
+
+/* ── Better toast ── */
+.toast{border-radius:16px;}
+.toast[data-new]{border-left-color:var(--g);}
+
+/* ── Login badge improvement ── */
+.lf-tag{background:linear-gradient(135deg,rgba(48,209,88,.12),rgba(48,209,88,.06));padding:.3rem .9rem;}
+
+/* ── Improved nav dot for live ── */
+.ls-dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 0 3px rgba(48,209,88,.2);animation:dotBlink 1.5s ease-in-out infinite;}
+
+/* ── Action button improvements ── */
+.btn-prep{border:1.5px solid rgba(10,132,255,.2);}
+.btn-rdy{border:1.5px solid rgba(48,209,88,.2);}
+.btn-col{border:1.5px solid var(--bd);}
+
+/* ── Table improvements ── */
+thead tr{background:linear-gradient(90deg,var(--bg2),var(--bg3));}
+th{font-size:.64rem;letter-spacing:.1em;}
+tr:hover td{background:rgba(10,132,255,.04);}
+[data-theme=dark] tr:hover td{background:rgba(10,132,255,.08);}
+
+/* ── View toggle glow ── */
+.vt-btn.on{color:var(--a);font-weight:700;}
+
+/* ── Chart card improvement ── */
+.chart-card{border-radius:16px;}
+.chart-title{display:flex;align-items:center;gap:.5rem;}
+.chart-title::before{content:'';display:block;width:3px;height:14px;background:var(--a);border-radius:2px;}
+
 </style>
 </head>
 <body>
@@ -689,7 +754,14 @@ function renderOrdersTable(){
 function startClock(){function t(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}t();setInterval(t,1000);}
 
 /* Time ago */
-function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'just now';if(s<3600)return Math.floor(s/60)+'m ago';return Math.floor(s/3600)+'h ago';}
+function timeAgo(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return '<span style="color:var(--g);font-weight:700">just now</span>';
+  if(s<300)return '<span style="color:var(--g)">'+ Math.floor(s/60)+'m ago</span>';
+  if(s<1800)return '<span style="color:var(--w)">'+ Math.floor(s/60)+'m ago</span>';
+  if(s<3600)return '<span style="color:var(--r)">'+ Math.floor(s/60)+'m ago</span>';
+  return '<span style="color:var(--r)">'+ Math.floor(s/3600)+'h ago</span>';
+}
 
 document.addEventListener('click',()=>{try{initAudio();}catch(e){}},{once:true});
 </script>
