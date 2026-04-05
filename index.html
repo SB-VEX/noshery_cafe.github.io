@@ -429,7 +429,7 @@ async function placeOrder(){
     /* 1 — read current orders */
     const getRes=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':'$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS','X-Bin-Meta':'false'}});
     const getData=await getRes.json();
-    const existing=Array.isArray(getData.record)?getData.record:[];
+    const existing=Array.isArray(getData)?getData:(Array.isArray(getData.record)?getData.record:[]);
     /* 2 — add new order */
     existing.unshift(newOrder);
     /* 3 — save back */
