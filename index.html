@@ -116,11 +116,11 @@ button{font-family:'Sora',sans-serif;cursor:pointer;}
 .hero-content{position:relative;z-index:1;padding:clamp(1.5rem,4vw,3rem) clamp(1.5rem,4vw,3rem) clamp(2rem,5vw,3.5rem);max-width:580px;width:100%;}
 .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(48,209,88,.18);border:1px solid rgba(48,209,88,.35);color:#4CD964;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .85rem;border-radius:100px;margin-bottom:1rem;animation:fadeSlideUp .7s var(--ease) .1s both;}
 .ob{width:6px;height:6px;border-radius:50%;background:#4CD964;animation:dotBlink 1.6s ease-in-out infinite;}
-.hero-h{font-family:'Instrument Serif',serif;font-size:clamp(2.5rem,6.5vw,4.5rem);font-weight:400;line-height:1.08;color:#fff;margin-bottom:.8rem;letter-spacing:-.02em;animation:fadeSlideUp .8s var(--ease) .2s both;}
+.hero-h{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,6.5vw,4.8rem);font-weight:400;line-height:1.06;color:#fff;margin-bottom:.85rem;letter-spacing:-.025em;text-shadow:0 2px 20px rgba(0,0,0,.3);animation:fadeSlideUp .8s var(--ease) .2s both;}
 .hero-h em{font-style:italic;color:rgba(255,255,255,.7);}
 .hero-sub{font-size:.92rem;font-weight:400;line-height:1.68;color:rgba(255,255,255,.65);margin-bottom:1.8rem;max-width:400px;animation:fadeSlideUp .8s var(--ease) .3s both;}
 .hero-btns{display:flex;gap:.7rem;flex-wrap:wrap;animation:fadeSlideUp .8s var(--ease) .4s both;}
-.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--text);font-size:.85rem;font-weight:700;padding:.78rem 1.7rem;border-radius:100px;border:none;transition:all .3s var(--spring);position:relative;overflow:hidden;}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#1D1D1F;font-size:.88rem;font-weight:800;padding:.82rem 1.8rem;border-radius:100px;border:none;transition:all .3s var(--spring);position:relative;overflow:hidden;letter-spacing:-.01em;}
 .btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,0,0,.04),transparent);transform:translateX(-100%);transition:transform .5s var(--snappy);}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
 .btn-primary:hover::after{transform:translateX(100%);}
@@ -344,6 +344,88 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:640px){.hero-chips{display:none;}.ham{display:flex;}.nav-links{display:none;}.hc-n{font-size:.9rem;}.wc{width:155px;}}
+
+.pop-badge{display:inline-flex;align-items:center;gap:.2rem;background:rgba(10,132,255,.1);color:var(--a);font-size:.6rem;font-weight:700;padding:.12rem .45rem;border-radius:100px;letter-spacing:.04em;vertical-align:middle;margin-left:.3rem;border:1px solid rgba(10,132,255,.2);}
+[data-theme=dark] .pop-badge{background:rgba(10,132,255,.18);border-color:rgba(10,132,255,.3);}
+[data-theme=warm] .pop-badge{background:rgba(232,144,10,.1);color:var(--a);border-color:rgba(232,144,10,.25);}
+
+/* ── Improved section label ── */
+.sec-label{font-size:.67rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--a);display:inline-flex;align-items:center;gap:.5rem;margin-bottom:.55rem;}
+.sec-label::before{content:'';display:block;width:16px;height:2px;background:var(--a);border-radius:2px;}
+
+/* ── Better price display ── */
+.mi-price{font-size:.92rem;font-weight:800;color:var(--text);background:var(--bg2);padding:.22rem .65rem;border-radius:8px;border:1px solid var(--bd);transition:all .3s var(--spring);}
+.mi:hover .mi-price{background:var(--a);color:#fff;border-color:var(--a);transform:scale(1.06);}
+
+/* ── Improved why cards ── */
+.wc{flex-shrink:0;width:175px;background:var(--bg2);border-radius:18px;padding:1.4rem 1.1rem;transition:all .35s var(--spring);cursor:default;border:1.5px solid var(--bd);position:relative;overflow:hidden;}
+.wc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,132,255,.05),transparent);opacity:0;transition:opacity .3s;}
+.wc:hover::before{opacity:1;}
+.wc:hover{transform:translateY(-7px);box-shadow:0 16px 44px var(--sh2);border-color:var(--a);}
+
+/* ── Improved CTA ── */
+.cta-band{background:linear-gradient(135deg,#0066CC 0%,#0A84FF 40%,#34AAFF 100%);border-radius:22px;padding:3rem 2rem;text-align:center;position:relative;overflow:hidden;margin:0 0 3rem;}
+[data-theme=warm] .cta-band{background:linear-gradient(135deg,#C07008 0%,#E8900A 40%,#F5B03A 100%);}
+.cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 120%,rgba(255,255,255,.15),transparent);}
+.cta-h{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,4.5vw,2.6rem);color:#fff;margin-bottom:.5rem;position:relative;letter-spacing:-.025em;text-shadow:0 2px 12px rgba(0,0,60,.2);}
+.cta-p{font-size:.85rem;color:rgba(255,255,255,.82);margin-bottom:1.6rem;position:relative;}
+
+/* ── Improved review cards ── */
+.rc{background:var(--bg2);border-radius:18px;padding:1.4rem 1.3rem;transition:all .3s var(--spring);border:1.5px solid var(--bd);position:relative;overflow:hidden;}
+.rc::after{content:'"';position:absolute;bottom:-1.5rem;right:1rem;font-family:'Instrument Serif',serif;font-size:7rem;color:var(--a);opacity:.06;line-height:1;pointer-events:none;}
+
+/* ── Improved hours block ── */
+.hours-block{background:var(--bg2);border-radius:16px;overflow:hidden;margin-bottom:1rem;border:1.5px solid var(--bd);}
+.hr:hover{background:linear-gradient(90deg,rgba(10,132,255,.05),transparent);}
+.hr-now{animation:none;background:var(--g);color:#fff;font-size:.58rem;font-weight:800;text-transform:uppercase;padding:.14rem .5rem;border-radius:100px;box-shadow:0 0 0 3px rgba(48,209,88,.2);}
+
+/* ── Drawer improvement ── */
+.drawer{border-radius:20px 0 0 20px;}
+
+/* ── Better checkout button animation ── */
+.btn-checkout{overflow:hidden;}
+.btn-checkout:hover::after{right:1.3rem;}
+
+/* ══ INTRO SECTION ══ */
+.intro-section{padding:3.5rem 0 2rem;position:relative;}
+.intro-lead{font-family:'Instrument Serif',serif;font-size:clamp(1.3rem,3vw,1.75rem);font-weight:400;line-height:1.55;color:var(--text);letter-spacing:-.015em;margin-bottom:2rem;font-style:italic;}
+.intro-lead strong{font-style:normal;color:var(--a);}
+.intro-body{font-size:.92rem;font-weight:400;line-height:1.9;color:var(--t2);margin-bottom:1.6rem;}
+.intro-body strong{color:var(--text);font-weight:700;}
+.intro-divider{display:flex;align-items:center;gap:1rem;margin:2rem 0;}
+.intro-divider::before,.intro-divider::after{content:'';flex:1;height:1px;background:var(--bd);}
+.intro-divider span{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);white-space:nowrap;}
+.intro-highlights{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;}
+.ih{flex:1;min-width:150px;background:var(--bg2);border-radius:16px;padding:1.2rem 1.1rem;border:1.5px solid var(--bd);transition:all .3s var(--spring);position:relative;overflow:hidden;}
+.ih::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 16px 16px;background:var(--a);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--spring);}
+.ih:hover{transform:translateY(-5px);box-shadow:0 12px 36px var(--sh2);border-color:var(--a);}
+.ih:hover::before{transform:scaleX(1);}
+.ih-icon{font-size:1.5rem;margin-bottom:.65rem;display:block;transition:transform .35s var(--spring);}
+.ih:hover .ih-icon{transform:scale(1.2) rotate(-8deg);}
+.ih-title{font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.3rem;}
+.ih-desc{font-size:.74rem;color:var(--t3);line-height:1.6;}
+.intro-quote{background:linear-gradient(135deg,rgba(10,132,255,.06),rgba(10,132,255,.02));border:1.5px solid rgba(10,132,255,.15);border-left:4px solid var(--a);border-radius:0 16px 16px 0;padding:1.4rem 1.6rem;margin:2rem 0;position:relative;overflow:hidden;}
+[data-theme=warm] .intro-quote{background:linear-gradient(135deg,rgba(232,144,10,.06),rgba(232,144,10,.02));border-color:rgba(232,144,10,.2);border-left-color:var(--a);}
+.intro-quote::before{content:'"';position:absolute;top:-.8rem;right:1rem;font-family:'Instrument Serif',serif;font-size:6rem;color:var(--a);opacity:.08;line-height:1;pointer-events:none;}
+.iq-text{font-family:'Instrument Serif',serif;font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:.5rem;}
+.iq-author{font-size:.75rem;font-weight:600;color:var(--t3);}
+.intro-stats{display:flex;gap:0;border:1.5px solid var(--bd);border-radius:18px;overflow:hidden;margin:2rem 0;}
+.is{flex:1;padding:1.2rem .8rem;text-align:center;border-right:1px solid var(--bd);transition:background .2s;}
+.is:last-child{border-right:none;}
+.is:hover{background:var(--bg2);}
+.is-num{font-family:'Instrument Serif',serif;font-size:1.8rem;font-weight:400;color:var(--a);display:block;line-height:1;margin-bottom:.25rem;}
+.is-label{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+.intro-img-row{display:flex;gap:.8rem;margin:2rem 0;overflow-x:auto;scrollbar-width:none;}
+.intro-img-row::-webkit-scrollbar{display:none;}
+.iir{flex-shrink:0;height:200px;border-radius:16px;overflow:hidden;position:relative;}
+.iir:nth-child(1){width:300px;flex-shrink:0;}
+.iir:nth-child(2){width:200px;flex-shrink:0;}
+.iir:nth-child(3){width:180px;flex-shrink:0;}
+.iir img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+.iir:hover img{transform:scale(1.07);}
+.iir-label{position:absolute;bottom:0;left:0;right:0;padding:.7rem .9rem;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);color:#fff;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:0;transform:translateY(4px);transition:all .3s;}
+.iir:hover .iir-label{opacity:1;transform:none;}
+@media(max-width:640px){.intro-highlights{gap:.7rem;}.ih{min-width:140px;}.intro-stats{flex-wrap:wrap;}.is{min-width:50%;}}
 </style>
 </head>
 <body>
@@ -408,6 +490,75 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
   </div>
 </section>
 
+
+<!-- ══ INTRO STRIP ══ -->
+<div class="page">
+  <section class="intro-section">
+
+    <p class="intro-lead reveal">
+      A proper British café in the heart of Isleworth —<br>
+      where <strong>every plate is generous</strong>, every price is honest, and every customer leaves with a smile.
+    </p>
+
+    <p class="intro-body reveal d1">
+      <strong>The Noshery has been feeding Isleworth since the early 2000s.</strong> What started as a simple greasy spoon has grown into one of West London's most beloved neighbourhood cafés — the kind of place builders stop at before dawn, families come to on Sunday mornings, and regulars have been visiting every day for twenty years.
+    </p>
+
+    <p class="intro-body reveal d2">
+      We cook everything <strong>fresh to order</strong>, every single time. No pre-made, no shortcuts, no compromise. That means you might wait a few minutes — but what arrives on your plate is worth every second. Our eggs are always perfectly fried, our sausages always properly browned, our tea always served piping hot.
+    </p>
+
+    <div class="intro-image-row reveal d1" style="display:flex;gap:.8rem;margin:2rem 0;overflow-x:auto;scrollbar-width:none;">
+      <div class="iir"><img src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=600&q=80" alt="Full English breakfast" loading="lazy"/><div class="iir-label">Full English</div></div>
+      <div class="iir"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80" alt="Coffee" loading="lazy"/><div class="iir-label">Fresh Coffee</div></div>
+      <div class="iir"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80" alt="Inside the café" loading="lazy"/><div class="iir-label">The Café</div></div>
+    </div>
+
+    <div class="intro-quote reveal">
+      <p class="iq-text">"With £10 you get completely full. The beans, bacon and sausages are absolutely delicious — consistently great food at a genuinely sensible price. There is nowhere better in Isleworth."</p>
+      <span class="iq-author">— Eri Huartos, Google Review ★★★★★</span>
+    </div>
+
+    <div class="intro-stats reveal d1">
+      <div class="is"><span class="is-num">20+</span><span class="is-label">Years open</span></div>
+      <div class="is"><span class="is-num">4.4★</span><span class="is-label">Google rating</span></div>
+      <div class="is"><span class="is-num">1,013</span><span class="is-label">Reviews</span></div>
+      <div class="is"><span class="is-num">£9</span><span class="is-label">Full breakfast</span></div>
+    </div>
+
+    <div class="intro-highlights">
+      <div class="ih reveal d1">
+        <span class="ih-icon">🍳</span>
+        <div class="ih-title">Cooked fresh daily</div>
+        <div class="ih-desc">Every dish made to order from scratch. No shortcuts, ever.</div>
+      </div>
+      <div class="ih reveal d2">
+        <span class="ih-icon">💷</span>
+        <div class="ih-title">Unbeatable value</div>
+        <div class="ih-desc">A proper full English for under £9. You won't find better nearby.</div>
+      </div>
+      <div class="ih reveal d3">
+        <span class="ih-icon">👨‍👩‍👧</span>
+        <div class="ih-title">Family run</div>
+        <div class="ih-desc">Independently owned and operated with genuine care for every customer.</div>
+      </div>
+      <div class="ih reveal d4">
+        <span class="ih-icon">📍</span>
+        <div class="ih-title">Heart of Isleworth</div>
+        <div class="ih-desc">Proudly serving the local community on London Road since 2000.</div>
+      </div>
+    </div>
+
+    <div class="intro-divider"><span>Now serving</span></div>
+
+    <p class="intro-body reveal">
+      Whether you're after a <strong>hearty Full Monty breakfast</strong> to set you up for the day, a <strong>warming chicken curry</strong> at lunchtime, or just a legendary <strong>builder's tea and a bacon bap</strong> — we've got you covered, seven days a week.
+      Order online below for collection and we'll have it ready and waiting.
+    </p>
+
+  </section>
+</div>
+
 <div class="page">
 
   <section class="section" id="menu-s">
@@ -423,20 +574,20 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
       <div class="mi show" data-cat="bk"><div class="mi-icon">🍳</div><div class="mi-info"><div class="mi-name">The Big Nosh</div><div class="mi-desc">2 eggs, 2 bacon, 2 sausage, beans & toast</div></div><div class="mi-right"><span class="mi-price">£7.80</span><button class="btn-add" onclick="addItem({id:'big-nosh',name:'The Big Nosh',price:7.80,emoji:'🍳'},this)">+</button></div></div>
       <div class="mi show" data-cat="bk"><div class="mi-icon">🌅</div><div class="mi-info"><div class="mi-name">Early Riser</div><div class="mi-desc">Bacon, egg, sausage & toast</div></div><div class="mi-right"><span class="mi-price">£7.90</span><button class="btn-add" onclick="addItem({id:'early-riser',name:'Early Riser',price:7.90,emoji:'🌅'},this)">+</button></div></div>
       <div class="mi show" data-cat="bk"><div class="mi-icon">🌿</div><div class="mi-info"><div class="mi-name">Veggie Breakfast</div><div class="mi-desc">Hash browns, eggs, mushrooms, beans & toast</div></div><div class="mi-right"><span class="mi-price">£7.90</span><button class="btn-add" onclick="addItem({id:'veggie',name:'Veggie Breakfast',price:7.90,emoji:'🌿'},this)">+</button></div></div>
-      <div class="mi show" data-cat="bk"><div class="mi-icon">👑</div><div class="mi-info"><div class="mi-name">Full Monty</div><div class="mi-desc">The full works — for the seriously hungry</div></div><div class="mi-right"><span class="mi-price">£8.95</span><button class="btn-add" onclick="addItem({id:'full-monty',name:'Full Monty',price:8.95,emoji:'👑'},this)">+</button></div></div>
+      <div class="mi show" data-cat="bk"><div class="mi-icon">👑</div><div class="mi-info"><div class="mi-name">Full Monty <span class="pop-badge">⭐ Popular</span></div><div class="mi-desc">The full works — for the seriously hungry</div></div><div class="mi-right"><span class="mi-price">£8.95</span><button class="btn-add" onclick="addItem({id:'full-monty',name:'Full Monty',price:8.95,emoji:'👑'},this)">+</button></div></div>
       <div class="mi show" data-cat="bk"><div class="mi-icon">🥚</div><div class="mi-info"><div class="mi-name">2 Eggs on Toast</div><div class="mi-desc">Fried, poached or scrambled</div></div><div class="mi-right"><span class="mi-price">£3.50</span><button class="btn-add" onclick="addItem({id:'eggs',name:'2 Eggs on Toast',price:3.50,emoji:'🥚'},this)">+</button></div></div>
-      <div class="mi show" data-cat="bk"><div class="mi-icon">🧆</div><div class="mi-info"><div class="mi-name">Bobby Special Omelette</div><div class="mi-desc">Our signature — stuffed to the brim</div></div><div class="mi-right"><span class="mi-price">£5.95</span><button class="btn-add" onclick="addItem({id:'bobby',name:'Bobby Special Omelette',price:5.95,emoji:'🧆'},this)">+</button></div></div>
+      <div class="mi show" data-cat="bk"><div class="mi-icon">🧆</div><div class="mi-info"><div class="mi-name">Bobby Special Omelette <span class="pop-badge">🔥 Signature</span></div><div class="mi-desc">Our signature — stuffed to the brim</div></div><div class="mi-right"><span class="mi-price">£5.95</span><button class="btn-add" onclick="addItem({id:'bobby',name:'Bobby Special Omelette',price:5.95,emoji:'🧆'},this)">+</button></div></div>
       <div class="mi show" data-cat="bk"><div class="mi-icon">🥓</div><div class="mi-info"><div class="mi-name">Bacon Bap</div><div class="mi-desc">Crispy bacon in a fresh roll</div></div><div class="mi-right"><span class="mi-price">£3.50</span><button class="btn-add" onclick="addItem({id:'bacon-bap',name:'Bacon Bap',price:3.50,emoji:'🥓'},this)">+</button></div></div>
       <div class="mi show" data-cat="bk"><div class="mi-icon">🍞</div><div class="mi-info"><div class="mi-name">Sausage Bap</div><div class="mi-desc">Pork sausages in a fresh bap</div></div><div class="mi-right"><span class="mi-price">£3.50</span><button class="btn-add" onclick="addItem({id:'saus-bap',name:'Sausage Bap',price:3.50,emoji:'🍞'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🍗</div><div class="mi-info"><div class="mi-name">Roast Chicken</div><div class="mi-desc">With veg, roasties & gravy</div></div><div class="mi-right"><span class="mi-price">£7.45</span><button class="btn-add" onclick="addItem({id:'r-chicken',name:'Roast Chicken',price:7.45,emoji:'🍗'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🥩</div><div class="mi-info"><div class="mi-name">Roast Beef</div><div class="mi-desc">Yorkshire pud, veg & rich gravy</div></div><div class="mi-right"><span class="mi-price">£6.95</span><button class="btn-add" onclick="addItem({id:'r-beef',name:'Roast Beef',price:6.95,emoji:'🥩'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🥘</div><div class="mi-info"><div class="mi-name">Shepherd's Pie</div><div class="mi-desc">Minced lamb under golden mash crust</div></div><div class="mi-right"><span class="mi-price">£6.95</span><button class="btn-add" onclick="addItem({id:'shep',name:'Shepherd\'s Pie',price:6.95,emoji:'🥘'},this)">+</button></div></div>
-      <div class="mi" data-cat="mn"><div class="mi-icon">🍛</div><div class="mi-info"><div class="mi-name">Chicken Curry</div><div class="mi-desc">Rich warming curry with rice or chips</div></div><div class="mi-right"><span class="mi-price">£6.95</span><button class="btn-add" onclick="addItem({id:'curry',name:'Chicken Curry',price:6.95,emoji:'🍛'},this)">+</button></div></div>
+      <div class="mi" data-cat="mn"><div class="mi-icon">🍛</div><div class="mi-info"><div class="mi-name">Chicken Curry <span class="pop-badge">⭐ Popular</span></div><div class="mi-desc">Rich warming curry with rice or chips</div></div><div class="mi-right"><span class="mi-price">£6.95</span><button class="btn-add" onclick="addItem({id:'curry',name:'Chicken Curry',price:6.95,emoji:'🍛'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🥩</div><div class="mi-info"><div class="mi-name">Mixed Grill</div><div class="mi-desc">Steak, chop, sausage, egg, chips & peas</div></div><div class="mi-right"><span class="mi-price">£8.95</span><button class="btn-add" onclick="addItem({id:'mixed',name:'Mixed Grill',price:8.95,emoji:'🥩'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🍝</div><div class="mi-info"><div class="mi-name">Lasagne</div><div class="mi-desc">Homemade beef lasagne, garlic bread & salad</div></div><div class="mi-right"><span class="mi-price">£6.95</span><button class="btn-add" onclick="addItem({id:'lasagne',name:'Lasagne',price:6.95,emoji:'🍝'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🍔</div><div class="mi-info"><div class="mi-name">Beefburger & Chips</div><div class="mi-desc">¼ pounder with lettuce, tomato & chips</div></div><div class="mi-right"><span class="mi-price">£4.50</span><button class="btn-add" onclick="addItem({id:'burger',name:'Beefburger & Chips',price:4.50,emoji:'🍔'},this)">+</button></div></div>
       <div class="mi" data-cat="mn"><div class="mi-icon">🐷</div><div class="mi-info"><div class="mi-name">Roast Pork</div><div class="mi-desc">Tender pork, crackling & apple sauce</div></div><div class="mi-right"><span class="mi-price">£6.45</span><button class="btn-add" onclick="addItem({id:'r-pork',name:'Roast Pork',price:6.45,emoji:'🐷'},this)">+</button></div></div>
-      <div class="mi" data-cat="lb"><div class="mi-icon">🥗</div><div class="mi-info"><div class="mi-name">Famous Chicken Salad</div><div class="mi-desc">Nosh chicken, chips & side salad</div></div><div class="mi-right"><span class="mi-price">£5.45</span><button class="btn-add" onclick="addItem({id:'c-salad',name:'Famous Chicken Salad',price:5.45,emoji:'🥗'},this)">+</button></div></div>
+      <div class="mi" data-cat="lb"><div class="mi-icon">🥗</div><div class="mi-info"><div class="mi-name">Famous Chicken Salad <span class="pop-badge">❤️ Fan Fave</span></div><div class="mi-desc">Nosh chicken, chips & side salad</div></div><div class="mi-right"><span class="mi-price">£5.45</span><button class="btn-add" onclick="addItem({id:'c-salad',name:'Famous Chicken Salad',price:5.45,emoji:'🥗'},this)">+</button></div></div>
       <div class="mi" data-cat="lb"><div class="mi-icon">🥔</div><div class="mi-info"><div class="mi-name">Jacket — Tuna Mayo</div><div class="mi-desc">Loaded baked potato</div></div><div class="mi-right"><span class="mi-price">£5.50</span><button class="btn-add" onclick="addItem({id:'jk-tuna',name:'Jacket Tuna Mayo',price:5.50,emoji:'🥔'},this)">+</button></div></div>
       <div class="mi" data-cat="lb"><div class="mi-icon">🥔</div><div class="mi-info"><div class="mi-name">Jacket — Bolognese</div><div class="mi-desc">Potato piled with homemade bolognese</div></div><div class="mi-right"><span class="mi-price">£5.50</span><button class="btn-add" onclick="addItem({id:'jk-bolo',name:'Jacket Bolognese',price:5.50,emoji:'🥔'},this)">+</button></div></div>
       <div class="mi" data-cat="lb"><div class="mi-icon">🥪</div><div class="mi-info"><div class="mi-name">Toasted Sandwich</div><div class="mi-desc">Cheese, ham, tuna & more</div></div><div class="mi-right"><span class="mi-price">£3.00</span><button class="btn-add" onclick="addItem({id:'toast',name:'Toasted Sandwich',price:3.00,emoji:'🥪'},this)">+</button></div></div>
