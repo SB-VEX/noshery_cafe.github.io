@@ -296,6 +296,7 @@ let currentFilter = 'all';
 let loggedInUser  = null;
 let audioCtx      = null;
 let knownRefs     = new Set();
+let deletedRefs   = new Set();
 let pollInterval  = null;
 
 const STAFF = {
@@ -389,7 +390,8 @@ async function fetchOrders(){
     const res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':'$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS'}});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
-    const incoming=Array.isArray(data)?data:(Array.isArray(data.record)?data.record:[]);
+    const all=Array.isArray(data)?data:(Array.isArray(data.record)?data.record:[]);
+    const incoming=all.filter(o=>!deletedRefs.has(o.ref));
     //setConn(`✅ Connected · Last checked: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`);
     // detect new orders
     incoming.forEach(o=>{
@@ -435,8 +437,11 @@ function updateStatus(ref,status){
   showToast('✅',`${ref} updated`,`Status: ${labels[status]||status}`,2500);
 }
 function deleteOrder(ref){
-  orders=orders.filter(x=>x.ref!==ref);knownRefs.delete(ref);
-  saveOrders();renderOrders();
+  orders=orders.filter(x=>x.ref!==ref);
+  knownRefs.delete(ref);
+  deletedRefs.add(ref);
+  saveOrders();
+  renderOrders();
   showToast('🗑️','Order removed','',2000);
 }
 
