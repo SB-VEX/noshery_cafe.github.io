@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Noshery – Staff Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brown:#5C3D1E;--brown2:#3D2309;--caramel:#C17F3C;--amber:#E8A020;--amber2:#F5B83A;
+  --cream:#F9F5EF;--cream2:#F2EBE0;--cream3:#EAD9C4;--white:#FFFFFF;--text:#2C1A0A;
+  --muted:#8B6B55;--border:#E6D5BE;--green:#16A34A;--green2:#DCFCE7;
+  --blue:#2563EB;--blue2:#DBEAFE;--red:#DC2626;--red2:#FEE2E2;
+  --orange:#EA580C;--orange2:#FFEDD5;
+  --shadow:rgba(44,26,10,.1);--shadow2:rgba(44,26,10,.2);
+  --font:'Poppins',sans-serif;--font-d:'Playfair Display',serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);--spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:var(--font);background:var(--cream);color:var(--text);-webkit-font-smoothing:antialiased;}
+button{font-family:var(--font);cursor:pointer;}input{font-family:var(--font);}
+
+/* LOGIN */
+#loginPage{min-height:100vh;display:flex;}
+.login-left{flex:1;background:var(--brown2);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3rem;position:relative;overflow:hidden;}
+.login-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 40%,rgba(232,160,32,.12) 0%,transparent 60%);}
+.ll-floats{position:absolute;inset:0;pointer-events:none;}
+.ll-floats span{position:absolute;font-size:2.5rem;opacity:.06;animation:llFloat 5s ease-in-out infinite;}
+.ll-floats span:nth-child(1){top:10%;left:10%;}
+.ll-floats span:nth-child(2){top:60%;left:5%;animation-delay:-1.5s;font-size:1.8rem;}
+.ll-floats span:nth-child(3){top:25%;right:10%;animation-delay:-.8s;}
+.ll-floats span:nth-child(4){bottom:15%;right:8%;animation-delay:-2.5s;font-size:1.8rem;}
+@keyframes llFloat{0%,100%{transform:translateY(0)rotate(-5deg);}50%{transform:translateY(-14px)rotate(5deg);}}
+.ll-content{position:relative;z-index:1;text-align:center;max-width:380px;}
+.ll-logo{display:inline-flex;align-items:center;gap:.8rem;margin-bottom:2.5rem;}
+.ll-logo-badge{width:52px;height:52px;background:var(--amber);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 8px 24px rgba(232,160,32,.35);animation:badgePop 2s ease-in-out infinite;}
+@keyframes badgePop{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.ll-logo-text{font-size:1.6rem;font-weight:800;color:var(--white);}
+.ll-headline{font-size:2.2rem;font-weight:900;color:var(--white);line-height:1.1;letter-spacing:-.025em;margin-bottom:.8rem;}
+.ll-headline span{font-family:var(--font-d);font-style:italic;font-weight:400;background:linear-gradient(100deg,var(--amber),var(--amber2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ll-sub{font-size:.9rem;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;}
+.ll-features{margin-top:2.5rem;display:flex;flex-direction:column;gap:.8rem;}
+.ll-feat{display:flex;align-items:center;gap:.8rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.85rem 1.2rem;text-align:left;}
+.ll-feat-icon{font-size:1.2rem;flex-shrink:0;}
+.ll-feat-text{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.7);}
+.login-right{width:480px;flex-shrink:0;background:var(--white);display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem;box-shadow:-8px 0 40px rgba(44,26,10,.12);}
+.lr-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);color:var(--green);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .9rem;border-radius:100px;margin-bottom:1.8rem;width:fit-content;}
+.lr-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:greenPulse 2s ease-in-out infinite;}
+@keyframes greenPulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4);}50%{box-shadow:0 0 0 6px rgba(22,163,74,0);}}
+.lr-h{font-size:1.7rem;font-weight:900;color:var(--brown2);margin-bottom:.3rem;}
+.lr-sub{font-size:.85rem;color:var(--muted);margin-bottom:2rem;}
+.form-grp{margin-bottom:1.2rem;}
+.form-grp label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+.form-grp input{width:100%;padding:.9rem 1.1rem;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;font-size:.9rem;font-weight:500;color:var(--brown2);transition:border-color .25s,box-shadow .25s;outline:none;}
+.form-grp input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(232,160,32,.15);}
+.pass-wrap{position:relative;}.pass-wrap input{padding-right:3rem;}
+.pass-toggle{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:1rem;transition:color .2s;}
+.pass-toggle:hover{color:var(--brown);}
+.login-error{background:var(--red2);border:1px solid rgba(220,38,38,.2);color:var(--red);font-size:.82rem;font-weight:600;padding:.7rem 1rem;border-radius:10px;margin-bottom:1rem;display:none;}
+.btn-login{width:100%;padding:1rem;border-radius:100px;background:var(--amber);color:var(--white);font-size:.95rem;font-weight:800;border:none;transition:all .3s var(--spring);position:relative;overflow:hidden;}
+.btn-login:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,160,32,.4);}
+.btn-login.loading{opacity:.7;pointer-events:none;}
+.login-hint{margin-top:1.8rem;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;font-size:.78rem;}
+.login-hint strong{display:block;font-weight:700;color:var(--brown2);margin-bottom:.4rem;}
+.login-hint code{background:var(--cream3);color:var(--brown);padding:.15rem .4rem;border-radius:5px;font-weight:700;font-size:.78rem;}
+
+/* DASHBOARD */
+#dashboard{display:none;}
+.dash-nav{position:sticky;top:0;z-index:800;height:64px;background:rgba(249,245,239,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;box-shadow:0 2px 16px rgba(44,26,10,.06);}
+.dn-left{display:flex;align-items:center;gap:1rem;}
+.dn-logo{display:flex;align-items:center;gap:.6rem;}
+.dn-logo-badge{width:36px;height:36px;background:var(--amber);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:transform .3s var(--spring);}
+.dn-logo:hover .dn-logo-badge{transform:rotate(-8deg) scale(1.1);}
+.dn-logo-text{font-size:1.1rem;font-weight:800;color:var(--brown2);}
+.dn-divider{width:1px;height:28px;background:var(--border);}
+.dn-title{font-size:.82rem;font-weight:600;color:var(--muted);}
+.dn-right{display:flex;align-items:center;gap:1rem;}
+.notif-btn{position:relative;width:40px;height:40px;border-radius:10px;background:var(--cream2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .25s var(--spring);}
+.notif-btn:hover{background:var(--amber);border-color:var(--amber);}
+.notif-dot{position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--cream);opacity:0;transform:scale(0);transition:all .3s var(--spring);}
+.notif-dot.show{opacity:1;transform:scale(1);}
+.staff-pill{display:flex;align-items:center;gap:.6rem;background:var(--cream2);border:1.5px solid var(--border);border-radius:100px;padding:.4rem 1rem;}
+.staff-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--caramel),var(--amber2));display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:var(--white);}
+.staff-name{font-size:.8rem;font-weight:700;color:var(--brown2);}
+.btn-logout{display:flex;align-items:center;gap:.4rem;background:transparent;border:1.5px solid var(--border);color:var(--muted);font-size:.78rem;font-weight:600;padding:.45rem .9rem;border-radius:100px;transition:all .25s;}
+.btn-logout:hover{background:var(--red2);border-color:rgba(220,38,38,.3);color:var(--red);}
+.clock{font-size:.75rem;font-weight:700;color:var(--muted);background:var(--cream2);border:1px solid var(--border);padding:.3rem .8rem;border-radius:100px;}
+
+/* CONNECTION STATUS BAR */
+.conn-bar{padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:600;gap:1rem;flex-wrap:wrap;}
+.conn-bar.connected{background:var(--green2);color:#15803D;border-bottom:1px solid #BBF7D0;}
+.conn-bar.error{background:var(--red2);color:var(--red);border-bottom:1px solid #FECACA;}
+.conn-bar.checking{background:#FEF3C7;color:#92400E;border-bottom:1px solid #FDE68A;}
+.conn-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;animation:livePulse 1.5s ease-in-out infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.conn-left{display:flex;align-items:center;gap:.6rem;}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.stat-cell{background:var(--white);padding:1.1rem 1.5rem;display:flex;align-items:center;gap:.9rem;transition:background .2s;}
+.stat-cell:hover{background:var(--cream);}
+.sc-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.sc-num{font-size:1.5rem;font-weight:900;color:var(--brown2);line-height:1;display:block;}
+.sc-lbl{font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+
+/* LIVE BAR */
+.live-bar{background:var(--brown2);padding:.55rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+.live-left{display:flex;align-items:center;gap:.8rem;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:livePulse 1.5s ease-in-out infinite;}
+.live-text{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);}
+.live-time{font-size:.75rem;font-weight:700;color:var(--amber2);}
+.notif-banner{background:rgba(37,99,235,.08);border-bottom:1px solid rgba(37,99,235,.15);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;font-weight:500;color:var(--blue);gap:1rem;}
+.btn-allow-notif{display:flex;align-items:center;gap:.4rem;background:var(--blue);color:var(--white);font-size:.75rem;font-weight:700;padding:.4rem 1rem;border-radius:100px;border:none;transition:all .25s;flex-shrink:0;}
+.btn-allow-notif:hover{background:#1D4ED8;}
+
+/* ORDERS */
+.orders-area{padding:1.5rem 2rem;}
+.filter-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.ftab{display:flex;align-items:center;gap:.4rem;background:var(--white);border:1.5px solid var(--border);color:var(--muted);font-size:.78rem;font-weight:700;padding:.5rem 1.1rem;border-radius:100px;transition:all .25s var(--spring);}
+.ftab:hover{border-color:var(--amber);color:var(--brown);}
+.ftab.active{background:var(--brown2);border-color:var(--brown2);color:var(--white);}
+.ftab-count{background:rgba(255,255,255,.2);color:inherit;font-size:.68rem;font-weight:800;padding:.1rem .45rem;border-radius:100px;min-width:20px;text-align:center;}
+.ftab:not(.active) .ftab-count{background:var(--cream2);color:var(--muted);}
+.orders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;}
+.empty-state{grid-column:1/-1;text-align:center;padding:4rem 2rem;}
+.es-emoji{font-size:3.5rem;display:block;margin-bottom:1rem;animation:llFloat 3s ease-in-out infinite;}
+.es-h{font-size:1.1rem;font-weight:800;color:var(--brown2);margin-bottom:.4rem;}
+.es-p{font-size:.85rem;color:var(--muted);}
+
+/* ORDER CARD */
+.order-card{background:var(--white);border:2px solid var(--border);border-radius:18px;overflow:hidden;transition:all .35s var(--spring);animation:cardIn .4s var(--ease);}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.97);}to{opacity:1;transform:none;}}
+.order-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px var(--shadow2);}
+.order-card[data-status="new"]{border-color:var(--orange);}
+.order-card[data-status="preparing"]{border-color:var(--blue);}
+.order-card[data-status="ready"]{border-color:var(--green);}
+.order-card[data-status="collected"]{border-color:var(--border);opacity:.6;}
+.oc-head{padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.oc-ref{font-size:.82rem;font-weight:800;color:var(--brown2);}
+.oc-time{font-size:.7rem;font-weight:600;color:var(--muted);}
+.oc-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;}
+.oc-status[data-s="new"]{background:var(--orange2);color:var(--orange);}
+.oc-status[data-s="preparing"]{background:var(--blue2);color:var(--blue);}
+.oc-status[data-s="ready"]{background:var(--green2);color:var(--green);}
+.oc-status[data-s="collected"]{background:var(--cream2);color:var(--muted);}
+.oc-body{padding:1rem 1.2rem;}
+.oc-customer{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;}
+.oc-name{font-size:1rem;font-weight:800;color:var(--brown2);}
+.oc-phone{display:flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;color:var(--caramel);text-decoration:none;transition:color .2s;}
+.oc-phone:hover{color:var(--brown);}
+.oc-items{background:var(--cream);border-radius:10px;padding:.8rem 1rem;margin-bottom:.8rem;}
+.oc-item{display:flex;justify-content:space-between;font-size:.8rem;padding:.2rem 0;color:var(--brown2);}
+.oc-item span:first-child{font-weight:500;}.oc-item span:last-child{font-weight:700;color:var(--caramel);}
+.oc-total-row{display:flex;justify-content:space-between;padding-top:.5rem;border-top:1px solid var(--border);font-size:.82rem;}
+.oc-total-row span:last-child{font-weight:900;color:var(--brown2);}
+.oc-meta{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem;}
+.oc-meta-row{display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted);}
+.oc-meta-row strong{color:var(--brown2);font-weight:700;}
+.oc-notes{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:.55rem .8rem;font-size:.75rem;font-weight:500;color:var(--brown);font-style:italic;}
+.oc-actions{padding:.9rem 1.2rem;background:var(--cream);border-top:1px solid var(--border);display:flex;gap:.5rem;}
+.btn-action{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.75rem;font-weight:800;padding:.6rem;border-radius:10px;border:none;transition:all .25s var(--spring);}
+.btn-prepare{background:var(--blue2);color:var(--blue);}
+.btn-prepare:hover{background:var(--blue);color:var(--white);transform:translateY(-2px);}
+.btn-ready{background:var(--green2);color:var(--green);}
+.btn-ready:hover{background:var(--green);color:var(--white);transform:translateY(-2px);}
+.btn-collected{background:var(--cream2);color:var(--muted);}
+.btn-collected:hover{background:var(--cream3);color:var(--brown);transform:translateY(-2px);}
+.btn-delete{width:36px;height:36px;flex:none;background:var(--red2);color:var(--red);border-radius:10px;border:none;font-size:.9rem;transition:all .25s var(--spring);}
+.btn-delete:hover{background:var(--red);color:var(--white);transform:scale(1.05);}
+
+/* DEMO BANNER */
+.demo-banner{background:linear-gradient(90deg,#1E3A5F,#2563EB);color:var(--white);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;gap:1rem;flex-wrap:wrap;}
+.btn-demo{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);color:var(--white);font-size:.72rem;font-weight:700;padding:.35rem .9rem;border-radius:100px;border:1px solid rgba(255,255,255,.25);transition:all .25s;}
+.btn-demo:hover{background:rgba(255,255,255,.25);}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:1.2rem;right:1.2rem;z-index:9999;display:flex;flex-direction:column;gap:.6rem;pointer-events:none;}
+.toast{display:flex;align-items:flex-start;gap:.9rem;background:var(--brown2);color:var(--white);padding:1rem 1.3rem;border-radius:16px;box-shadow:0 8px 32px rgba(44,26,10,.35);min-width:300px;max-width:380px;animation:toastIn .4s var(--spring) both;pointer-events:all;border-left:4px solid var(--amber);}
+.toast.removing{animation:toastOut .3s var(--ease) both;}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px) scale(.96);}to{opacity:1;transform:none;}}
+@keyframes toastOut{from{opacity:1;transform:none;}to{opacity:0;transform:translateX(40px) scale(.96);}}
+.toast-icon{font-size:1.5rem;flex-shrink:0;}
+.toast-body{flex:1;}
+.toast-title{font-size:.85rem;font-weight:800;margin-bottom:.2rem;}
+.toast-msg{font-size:.75rem;color:rgba(255,255,255,.65);line-height:1.5;}
+.toast-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:1rem;align-self:flex-start;transition:color .2s;pointer-events:all;}
+.toast-close:hover{color:var(--white);}
+
+@media(max-width:900px){#loginPage{flex-direction:column;}.login-left{padding:2.5rem 2rem;min-height:40vh;}.login-right{width:100%;padding:2rem 1.5rem;}.stats-bar{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr);}.orders-area{padding:1rem;}.orders-grid{grid-template-columns:1fr;}.dash-nav{padding:0 1rem;}.dn-title{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginPage">
+  <div class="login-left">
+    <div class="ll-floats" aria-hidden="true"><span>🍳</span><span>☕</span><span>🥚</span><span>🥓</span></div>
+    <div class="ll-content">
+      <div class="ll-logo"><div class="ll-logo-badge">☕</div><span class="ll-logo-text">The Noshery</span></div>
+      <h1 class="ll-headline">Staff Order<br><span>Dashboard</span></h1>
+      <p class="ll-sub">See every order the moment it's placed — from any device, anywhere.</p>
+      <div class="ll-features">
+        <div class="ll-feat"><span class="ll-feat-icon">🔔</span><span class="ll-feat-text">Ping sound + notification on every new order</span></div>
+        <div class="ll-feat"><span class="ll-feat-icon">📱</span><span class="ll-feat-text">Works on iPad, phone, laptop — any device</span></div>
+        <div class="ll-feat"><span class="ll-feat-icon">☁️</span><span class="ll-feat-text">Orders sync across all devices in seconds</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="lr-badge"><span class="lr-badge-dot"></span>Staff Portal</div>
+    <h2 class="lr-h">Welcome back 👋</h2>
+    <p class="lr-sub">Sign in with your Noshery staff credentials.</p>
+    <div id="loginError" class="login-error">❌ Incorrect username or password.</div>
+    <div class="form-grp"><label>Username</label><input type="text" id="loginUser" placeholder="Enter your username" autocomplete="username"/></div>
+    <div class="form-grp"><label>Password</label><div class="pass-wrap"><input type="password" id="loginPass" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()"/><button class="pass-toggle" onclick="togglePass()" id="passToggle">👁</button></div></div>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div class="login-hint"><strong>🔐 Demo Credentials</strong><span>Username: <code>admin</code> &nbsp;|&nbsp; Password: <code>noshery2024</code></span></div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dashboard">
+  <nav class="dash-nav">
+    <div class="dn-left">
+      <div class="dn-logo"><div class="dn-logo-badge">☕</div><span class="dn-logo-text">The Noshery</span></div>
+      <div class="dn-divider"></div>
+      <span class="dn-title">Order Dashboard</span>
+    </div>
+    <div class="dn-right">
+      <span class="clock" id="clock">--:--:--</span>
+      <button class="notif-btn" onclick="requestNotifications()" title="Enable notifications">🔔<span class="notif-dot" id="notifDot"></span></button>
+      <div class="staff-pill"><div class="staff-avatar" id="staffAv">AD</div><span class="staff-name" id="staffNameDisplay">Admin</span></div>
+      <button class="btn-logout" onclick="doLogout()">↩ Logout</button>
+    </div>
+  </nav>
+
+  <!-- Connection status -->
+  <div class="conn-bar checking" id="connBar">
+    <div class="conn-left"><span class="conn-dot"></span><span id="connText">⏳ Connecting to order system...</span></div>
+  </div>
+
+  <div id="notifBanner" class="notif-banner" style="display:none">
+    <span>🔔 Enable notifications to get alerts even when this tab is in the background.</span>
+    <button class="btn-allow-notif" onclick="requestNotifications()">Enable Notifications</button>
+  </div>
+
+  <div class="demo-banner">
+    <div style="display:flex;align-items:center;gap:.6rem"><span>🧪</span><span><strong>Test it:</strong> Place an order on the customer website and it will appear here within seconds.</span></div>
+    <button class="btn-demo" onclick="addDemoOrder()">+ Simulate Order</button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-cell"><div class="sc-icon" style="background:var(--orange2)">🆕</div><div><span class="sc-num" id="statNew">0</span><span class="sc-lbl">New</span></div></div>
+    <div class="stat-cell"><div class="sc-icon" style="background:var(--blue2)">👨‍🍳</div><div><span class="sc-num" id="statPrep">0</span><span class="sc-lbl">Preparing</span></div></div>
+    <div class="stat-cell"><div class="sc-icon" style="background:var(--green2)">✅</div><div><span class="sc-num" id="statReady">0</span><span class="sc-lbl">Ready</span></div></div>
+    <div class="stat-cell"><div class="sc-icon" style="background:var(--cream2)">📦</div><div><span class="sc-num" id="statDone">0</span><span class="sc-lbl">Collected</span></div></div>
+    <div class="stat-cell"><div class="sc-icon" style="background:rgba(232,160,32,.15)">💷</div><div><span class="sc-num" id="statTotal">£0</span><span class="sc-lbl">Revenue</span></div></div>
+  </div>
+
+  <div class="live-bar">
+    <div class="live-left"><span class="live-dot"></span><span class="live-text">Live · Checking for new orders every 4 seconds</span></div>
+    <span class="live-time" id="lastUpdate">Starting up...</span>
+  </div>
+
+  <div class="orders-area">
+    <div class="filter-tabs">
+      <button class="ftab active" onclick="setFilter('all',this)">All <span class="ftab-count" id="fc-all">0</span></button>
+      <button class="ftab" onclick="setFilter('new',this)">🆕 New <span class="ftab-count" id="fc-new">0</span></button>
+      <button class="ftab" onclick="setFilter('preparing',this)">👨‍🍳 Preparing <span class="ftab-count" id="fc-preparing">0</span></button>
+      <button class="ftab" onclick="setFilter('ready',this)">✅ Ready <span class="ftab-count" id="fc-ready">0</span></button>
+      <button class="ftab" onclick="setFilter('collected',this)">📦 Collected <span class="ftab-count" id="fc-collected">0</span></button>
+    </div>
+    <div class="orders-grid" id="ordersGrid">
+      <div class="empty-state"><span class="es-emoji">🛎️</span><div class="es-h">No orders yet</div><p class="es-p">Orders from the customer site appear here automatically.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   🔧 PASTE YOUR 2 VALUES HERE
+   Same values as index.html
+══════════════════════════════════════ */
+const JSONBIN_ID  = '69d16cc736566621a87c8aca';
+const JSONBIN_KEY = '$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS';
+/* ══════════════════════════════════════ */
+
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+const HEADERS = { 'Content-Type':'application/json', 'X-Master-Key': JSONBIN_KEY };
+
+let orders = [];
+let currentFilter = 'all';
+let loggedInUser  = null;
+let audioCtx      = null;
+let knownRefs     = new Set();
+let pollInterval  = null;
+
+const STAFF = {
+  admin: {pass:'noshery2024',name:'Admin',  initials:'AD'},
+  chef1: {pass:'chef2024',   name:'Chef',   initials:'CH'},
+  front1:{pass:'front2024',  name:'Front',  initials:'FR'},
+};
+
+/* ── Audio ── */
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+function playPing(){
+  try{
+    initAudio();if(audioCtx.state==='suspended')audioCtx.resume();
+    [523.25,659.25,783.99,1046.50].forEach((freq,i)=>{
+      const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),t=audioCtx.currentTime+i*.14;
+      osc.connect(gain);gain.connect(audioCtx.destination);
+      osc.type='sine';osc.frequency.setValueAtTime(freq,t);
+      gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.28,t+.04);gain.gain.exponentialRampToValueAtTime(.001,t+.7);
+      osc.start(t);osc.stop(t+.7);
+    });
+  }catch(e){}
+}
+
+/* ── Notifications ── */
+function requestNotifications(){
+  if(!('Notification' in window)){showToast('⚠️','Not supported','Your browser doesn\'t support notifications.');return;}
+  if(Notification.permission==='granted'){showToast('✅','Already on!','You\'ll get notified for every order.');return;}
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){document.getElementById('notifBanner').style.display='none';document.getElementById('notifDot').classList.remove('show');showToast('🔔','Notifications on!','You\'ll be alerted for every new order.');}
+  });
+}
+function sendBrowserNotif(o){
+  if(Notification.permission==='granted')new Notification('🔔 New Order — The Noshery',{body:`${o.name} · ${o.ref} · £${Number(o.total).toFixed(2)}\nPickup: ${o.pickup}`});
+}
+
+/* ── Toast ── */
+function showToast(icon,title,msg,duration=4000){
+  const wrap=document.getElementById('toastWrap'),el=document.createElement('div');
+  el.className='toast';
+  el.innerHTML=`<span class="toast-icon">${icon}</span><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+  wrap.appendChild(el);setTimeout(()=>{el.classList.add('removing');setTimeout(()=>el.remove(),350);},duration);
+}
+
+/* ── Login ── */
+function togglePass(){const i=document.getElementById('loginPass');i.type=i.type==='password'?'text':'password';document.getElementById('passToggle').textContent=i.type==='password'?'👁':'🙈';}
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim().toLowerCase();
+  const p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError'),btn=document.getElementById('loginBtn');
+  err.style.display='none';
+  if(!u||!p){err.textContent='❌ Please enter both username and password.';err.style.display='block';return;}
+  btn.classList.add('loading');btn.textContent='Signing in...';
+  setTimeout(()=>{
+    const staff=STAFF[u];
+    if(staff&&staff.pass===p){
+      loggedInUser=u;
+      document.getElementById('staffNameDisplay').textContent=staff.name;
+      document.getElementById('staffAv').textContent=staff.initials;
+      document.getElementById('loginPage').style.display='none';
+      document.getElementById('dashboard').style.display='block';
+      initDashboard();initAudio();
+    }else{err.style.display='block';btn.classList.remove('loading');btn.textContent='Sign In →';}
+  },800);
+}
+function doLogout(){
+  if(pollInterval){clearInterval(pollInterval);pollInterval=null;}
+  loggedInUser=null;orders=[];knownRefs.clear();
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
+  document.getElementById('loginError').style.display='none';
+  document.getElementById('loginBtn').classList.remove('loading');document.getElementById('loginBtn').textContent='Sign In →';
+}
+
+/* ── Dashboard ── */
+function initDashboard(){
+  startClock();
+  if('Notification' in window&&Notification.permission==='default'){document.getElementById('notifBanner').style.display='flex';document.getElementById('notifDot').classList.add('show');}
+  fetchOrders(); // immediate first load
+  pollInterval=setInterval(fetchOrders,4000); // then every 4 seconds
+  showToast('✅','Signed in!',`Welcome back, ${STAFF[loggedInUser].name}! Watching for orders...`);
+}
+
+/* ── Fetch from JSONBin ── */
+async function fetchOrders(){
+  if(JSONBIN_ID==='69d16cc736566621a87c8aca'){
+    setConn('error','⚠️ JSONBin not set up yet — see SETUP_GUIDE.txt to connect. Orders will work once configured.');
+    return;
+  }
+  try{
+    const res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    const incoming=Array.isArray(data.record)?data.record:[];
+    setConn('connected',`✅ Connected · Last checked: ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`);
+    // detect new orders
+    incoming.forEach(o=>{
+      if(!knownRefs.has(o.ref)){
+        knownRefs.add(o.ref);
+        if(loggedInUser){
+          playPing();sendBrowserNotif(o);
+          document.getElementById('lastUpdate').textContent=`Last order: just now`;
+          showToast('🔔',`New Order! ${o.ref}`,`${o.name} · £${Number(o.total).toFixed(2)} · ${o.pickup}`);
+        }
+      }
+    });
+    // preserve local status changes
+    const merged=incoming.map(o=>{
+      const local=orders.find(x=>x.ref===o.ref);
+      return local?{...o,status:local.status}:o;
+    });
+    orders=merged;
+    renderOrders();
+  }catch(e){
+    setConn('error',`❌ Connection error — check your JSONBin credentials. (${e.message})`);
+  }
+}
+
+function setConn(type,msg){
+  const bar=document.getElementById('connBar');
+  bar.className=`conn-bar ${type}`;
+  document.getElementById('connText').textContent=msg;
+}
+
+/* ── Save status back to JSONBin ── */
+async function saveOrders(){
+  if(JSONBIN_ID==='69d16cc736566621a87c8aca')return;
+  try{await fetch(JSONBIN_URL,{method:'PUT',headers:HEADERS,body:JSON.stringify(orders)});}catch(e){}
+}
+
+/* ── Status actions ── */
+function updateStatus(ref,status){
+  const o=orders.find(x=>x.ref===ref);if(!o)return;
+  o.status=status;
+  saveOrders();renderOrders();
+  const labels={preparing:'👨‍🍳 Preparing',ready:'✅ Ready for collection',collected:'📦 Collected'};
+  showToast('✅',`${ref} updated`,`Status: ${labels[status]||status}`,2500);
+}
+function deleteOrder(ref){
+  orders=orders.filter(x=>x.ref!==ref);knownRefs.delete(ref);
+  saveOrders();renderOrders();
+  showToast('🗑️','Order removed','',2000);
+}
+
+/* ── Demo order ── */
+const demoC=[{name:'James Taylor',phone:'07700 900100'},{name:'Emma Williams',phone:'07700 900202'},{name:'Priya Sharma',phone:'07700 900303'}];
+const demoI=[[{name:'Full Monty',price:8.95,emoji:'👑',qty:1},{name:"Builder's Tea",price:1.50,emoji:'🫖',qty:2}],[{name:'Chicken Curry',price:6.95,emoji:'🍛',qty:2}],[{name:'The Big Nosh',price:7.80,emoji:'🍳',qty:1},{name:'Coffee',price:2.00,emoji:'☕',qty:1}]];
+function addDemoOrder(){
+  initAudio();
+  const ci=Math.floor(Math.random()*demoC.length),ii=Math.floor(Math.random()*demoI.length);
+  const cust=demoC[ci],items=demoI[ii];
+  const total=items.reduce((s,i)=>s+(i.price*i.qty),0);
+  const ref='NOS-'+(1000+Math.floor(Math.random()*8999));
+  const o={ref,name:cust.name,phone:cust.phone,items,total,pickup:'As soon as possible (~20 min)',notes:'',status:'new',receivedAt:Date.now()};
+  orders.unshift(o);knownRefs.add(ref);
+  playPing();sendBrowserNotif(o);
+  document.getElementById('lastUpdate').textContent='Last order: just now';
+  showToast('🔔',`New Order! ${ref}`,`${o.name} · £${total.toFixed(2)}`);
+  saveOrders();renderOrders();
+}
+
+/* ── Filter ── */
+function setFilter(f,btn){currentFilter=f;document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderOrders();}
+
+/* ── Render ── */
+function renderOrders(){
+  updateStats();
+  const grid=document.getElementById('ordersGrid');
+  const filtered=currentFilter==='all'?orders:orders.filter(o=>o.status===currentFilter);
+  if(!filtered.length){
+    const msgs={all:'Orders from customers will appear here automatically.',new:'No new orders right now.',preparing:'Nothing in preparation.',ready:'No orders ready yet.',collected:'No collected orders yet.'};
+    grid.innerHTML=`<div class="empty-state"><span class="es-emoji">🛎️</span><div class="es-h">Nothing here yet</div><p class="es-p">${msgs[currentFilter]||''}</p></div>`;
+    return;
+  }
+  grid.innerHTML=filtered.map(renderCard).join('');
+}
+function renderCard(o){
+  const total=Number(o.total)||o.items.reduce((s,i)=>s+(i.price*(i.qty||1)),0);
+  const statusLabels={new:'🆕 New',preparing:'👨‍🍳 Preparing',ready:'✅ Ready',collected:'📦 Collected'};
+  const items=o.items.map(i=>`<div class="oc-item"><span>${i.emoji} ${i.name}${i.qty>1?` ×${i.qty}`:''}</span><span>£${(i.price*(i.qty||1)).toFixed(2)}</span></div>`).join('');
+  const actions=o.status==='new'
+    ?`<button class="btn-action btn-prepare" onclick="updateStatus('${o.ref}','preparing')">👨‍🍳 Start Preparing</button>`
+    :o.status==='preparing'
+    ?`<button class="btn-action btn-ready" onclick="updateStatus('${o.ref}','ready')">✅ Mark as Ready</button>`
+    :o.status==='ready'
+    ?`<button class="btn-action btn-collected" onclick="updateStatus('${o.ref}','collected')">📦 Mark Collected</button>`
+    :`<span style="font-size:.75rem;color:var(--muted);padding:.6rem;">Completed ✓</span>`;
+  return `<div class="order-card" data-status="${o.status}"><div class="oc-head"><div><div class="oc-ref">${o.ref}</div><div class="oc-time">${timeAgo(o.receivedAt)}</div></div><span class="oc-status" data-s="${o.status}">${statusLabels[o.status]||o.status}</span></div><div class="oc-body"><div class="oc-customer"><span class="oc-name">${o.name}</span><a class="oc-phone" href="tel:${o.phone}">📞 ${o.phone}</a></div><div class="oc-items">${items}<div class="oc-total-row"><span>Total</span><span>£${total.toFixed(2)}</span></div></div><div class="oc-meta"><div class="oc-meta-row">🕒 Pickup: <strong>${o.pickup||'ASAP'}</strong></div></div>${o.notes?`<div class="oc-notes">📝 "${o.notes}"</div>`:''}</div><div class="oc-actions">${actions}<button class="btn-delete" onclick="deleteOrder('${o.ref}')" title="Delete">🗑</button></div></div>`;
+}
+
+/* ── Stats ── */
+function updateStats(){
+  const c={new:0,preparing:0,ready:0,collected:0};let rev=0;
+  orders.forEach(o=>{c[o.status]=(c[o.status]||0)+1;rev+=Number(o.total)||0;});
+  document.getElementById('statNew').textContent=c.new;
+  document.getElementById('statPrep').textContent=c.preparing;
+  document.getElementById('statReady').textContent=c.ready;
+  document.getElementById('statDone').textContent=c.collected;
+  document.getElementById('statTotal').textContent=`£${rev.toFixed(2)}`;
+  document.getElementById('fc-all').textContent=orders.length;
+  document.getElementById('fc-new').textContent=c.new;
+  document.getElementById('fc-preparing').textContent=c.preparing;
+  document.getElementById('fc-ready').textContent=c.ready;
+  document.getElementById('fc-collected').textContent=c.collected;
+}
+
+/* ── Clock ── */
+function startClock(){
+  function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+  tick();setInterval(tick,1000);
+}
+
+/* ── Time ago ── */
+function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'just now';if(s<3600){const m=Math.floor(s/60);return `${m} min${m>1?'s':''} ago`;}const h=Math.floor(s/3600);return `${h} hr${h>1?'s':''} ago`;}
+
+document.addEventListener('click',()=>{try{initAudio();}catch(e){}},{once:true});
+</script>
+</body>
+</html>
