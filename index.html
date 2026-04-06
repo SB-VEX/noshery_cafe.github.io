@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The Noshery</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='42' fill='%230A84FF'/%3E%3Cline x1='24' y1='18' x2='24' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='18' x2='31' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='38' y1='18' x2='38' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='34' x2='31' y2='66' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M52 18 Q58 24 58 32 L55 34 L55 66' stroke='white' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E"/>
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="The Noshery">
+<meta name="theme-color" content="#0A84FF">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='42' fill='%230A84FF'/%3E%3Cline x1='24' y1='18' x2='24' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='18' x2='31' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='38' y1='18' x2='38' y2='34' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='31' y1='34' x2='31' y2='66' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M52 18 Q58 24 58 32 L55 34 L55 66' stroke='white' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -747,7 +754,7 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
 
       <div class="notif-ask" id="notifAsk">
         <span>🔔</span>
-        <span>Get notified when your order is ready?</span>
+        <span>Get a phone notification when your order is ready?</span>
         <button onclick="askNotifPermission()">Enable</button>
       </div>
 
@@ -794,6 +801,14 @@ function setTheme(t){
 }
 function toggleTp(){document.getElementById('tpDrop').classList.toggle('show');}
 function closeTp(){document.getElementById('tpDrop').classList.remove('show');}
+/* ══ Register service worker for PWA notifications ══ */
+let swReg = null;
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js')
+    .then(reg => { swReg = reg; })
+    .catch(() => {});
+}
+
 document.addEventListener('click',e=>{if(!e.target.closest('.tp-wrap'))closeTp();});
 const st=localStorage.getItem('n-theme');if(st)setTheme(st);
 
@@ -1026,18 +1041,29 @@ function updateTrackerUI(status){
 
 function onOrderReady(){
   stopOrderTracking();
-  // Change modal header
   document.getElementById('confEmoji').textContent='✅';
   document.getElementById('confTitle').textContent='Ready for collection!';
   document.getElementById('confTitle').style.color='var(--g)';
-  // Browser notification
+  const msg = 'Come collect your order from The Noshery — 491A London Road, Isleworth TW7 4DA.';
   if(Notification.permission==='granted'){
-    new Notification('Your order is ready! 🎉',{
-      body:'Come collect your order from The Noshery — 491A London Road, Isleworth.',
-      icon:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='42' fill='%2330D158'/%3E%3Ctext x='42' y='56' text-anchor='middle' font-size='42'%3E✓%3C/text%3E%3C/svg%3E"
-    });
+    // Use SW showNotification — triggers native phone notification with vibrate + action buttons
+    if(swReg){
+      swReg.showNotification('Your order is ready! 🎉', {
+        body: msg,
+        vibrate: [200, 100, 200, 100, 400],
+        tag: 'order-ready',
+        requireInteraction: true,
+        actions: [
+          {action:'directions', title:'📍 Get Directions'},
+          {action:'dismiss', title:'OK'}
+        ]
+      }).catch(()=>{
+        new Notification('Your order is ready! 🎉', {body: msg});
+      });
+    } else {
+      new Notification('Your order is ready! 🎉', {body: msg});
+    }
   }
-  // Play a pleasant chime
   playReadyChime();
 }
 
@@ -1055,12 +1081,34 @@ function playReadyChime(){
   }catch(e){}
 }
 
-function askNotifPermission(){
-  Notification.requestPermission().then(p=>{
-    if(p==='granted'){
-      document.getElementById('notifAsk').classList.add('hidden');
+/* ── Service Worker registration ── */
+let swReg = null;
+
+async function registerSW(){
+  if(!('serviceWorker' in navigator)) return;
+  try {
+    const swCode = '\n/* Service Worker for ready notifications */\nself.addEventListener(\'message\', e => {\n  if (e.data && e.data.type === \'SHOW_READY\') {\n    self.registration.showNotification(\'Your order is ready! 🎉\', {\n      body: e.data.body || \'Come collect from The Noshery — 491A London Road, Isleworth.\',\n      icon: \'data:image/svg+xml,\' + encodeURIComponent(\'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><circle cx="42" cy="42" r="42" fill="#30D158"/><text x="42" y="58" text-anchor="middle" font-size="44" fill="white">✓</text></svg>\'),\n      badge: \'data:image/svg+xml,\' + encodeURIComponent(\'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><circle cx="42" cy="42" r="42" fill="#0A84FF"/></svg>\'),\n      vibrate: [200, 100, 200, 100, 400],\n      tag: \'order-ready\',\n      requireInteraction: true,\n      actions: [\n        { action: \'im-coming\', title: "I\'m on my way!" }\n      ]\n    });\n  }\n});\nself.addEventListener(\'notificationclick\', e => {\n  e.notification.close();\n  e.waitUntil(clients.openWindow(\'/\'));\n});\n';
+    const blob = new Blob([swCode], {type:'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    swReg = await navigator.serviceWorker.register(url, {scope:'/'});
+  } catch(e) { console.log('SW reg failed:', e); }
+}
+
+async function askNotifPermission(){
+  const p = await Notification.requestPermission();
+  if(p === 'granted'){
+    document.getElementById('notifAsk').classList.add('hidden');
+    await registerSW();
+    // Show test notification on iOS/Android
+    if(swReg){
+      swReg.active?.postMessage({type:'SHOW_READY', body:'Notifications are on! You will be alerted when your order is ready.'});
     }
-  });
+  }
+}
+
+// Auto-register SW on page load for users who already granted permission
+if('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted'){
+  registerSW();
 }
 
 /* Send SMS via TextBelt */
@@ -1118,20 +1166,21 @@ function downloadPDF(){
 
 /* Email receipt */
 function emailReceipt(){
-  if(!lastOrder)return;
-  const lines=lastOrder.items.map(i=>(i.qty||1)+'x '+i.name+' - £'+(i.price*(i.qty||1)).toFixed(2)).join('%0A');
-  const sub='Your%20Noshery%20Order%20-%20'+lastOrder.ref;
-  const body='Order%20Reference%3A%20'+lastOrder.ref
-    +'%0A%0AThank%20you%2C%20'+encodeURIComponent(lastOrder.name)+'!'
-    +'%0AYour%20order%20is%20confirmed%20at%20The%20Noshery.'
-    +'%0A%0APickup%3A%20'+encodeURIComponent(lastOrder.pickup)
-    +'%0A%0AYour%20order%3A%0A'+lines
-    +'%0A%0ATotal%3A%20%C2%A3'+lastOrder.total.toFixed(2)
-    +'%0A%0AAddress%3A%20491A%20London%20Road%2C%20Isleworth%20TW7%204DA'
-    +'%0APhone%3A%20020%208232%208618%0A%0AThank%20you!';
-  const a=document.createElement('a');
-  a.href='mailto:?subject='+sub+'&body='+body;
-  a.click();
+  if(!lastOrder) return;
+  const email = prompt('Enter your email address:');
+  if(!email || !email.includes('@')) return;
+  const items = lastOrder.items.map(i => (i.qty||1)+'x '+i.name+' - £'+(i.price*(i.qty||1)).toFixed(2)).join('%0D%0A');
+  const subject = encodeURIComponent('Your Noshery Order - '+lastOrder.ref);
+  const body = encodeURIComponent('Order Reference: '+lastOrder.ref)
+    +'%0D%0A%0D%0A'
+    +'Hi '+encodeURIComponent(lastOrder.name)+',%0D%0A'
+    +'Thank you for ordering at The Noshery!%0D%0A%0D%0A'
+    +'Pickup: '+encodeURIComponent(lastOrder.pickup)+'%0D%0A%0D%0A'
+    +'Your order:%0D%0A'
+    +items
+    +'%0D%0A%0D%0ATotal: %C2%A3'+lastOrder.total.toFixed(2)
+    +'%0D%0A%0D%0ACollection: 491A London Road, Isleworth TW7 4DA%0D%0APhone: 020 8232 8618%0D%0A%0D%0ASee you soon!';
+  window.open('mailto:'+encodeURIComponent(email)+'?subject='+subject+'&body='+body);
 }
 </script>
 <style>
