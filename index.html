@@ -809,6 +809,23 @@ if('serviceWorker' in navigator){
     .catch(() => {});
 }
 
+
+function askNotifPermission(){
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){
+      document.getElementById('notifAsk').classList.add('hidden');
+      if(swReg){
+        swReg.showNotification('Notifications enabled! 🔔',{
+          body:'We will notify you the moment your order is ready for collection.',
+          vibrate:[100,50,100],
+          tag:'welcome-notif'
+        }).catch(()=>{});
+      } else {
+        new Notification('Notifications enabled! 🔔',{body:'You will be notified when your order is ready.'});
+      }
+    }
+  });
+}
 document.addEventListener('click',e=>{if(!e.target.closest('.tp-wrap'))closeTp();});
 const st=localStorage.getItem('n-theme');if(st)setTheme(st);
 
@@ -1082,52 +1099,7 @@ function playReadyChime(){
 }
 
 /* ── Service Worker registration ── */
-let swReg = null;
 
-async function registerSW(){
-  if(!('serviceWorker' in navigator)) return;
-  try {
-    const swCode = '\n/* Service Worker for ready notifications */\nself.addEventListener(\'message\', e => {\n  if (e.data && e.data.type === \'SHOW_READY\') {\n    self.registration.showNotification(\'Your order is ready! 🎉\', {\n      body: e.data.body || \'Come collect from The Noshery — 491A London Road, Isleworth.\',\n      icon: \'data:image/svg+xml,\' + encodeURIComponent(\'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><circle cx="42" cy="42" r="42" fill="#30D158"/><text x="42" y="58" text-anchor="middle" font-size="44" fill="white">✓</text></svg>\'),\n      badge: \'data:image/svg+xml,\' + encodeURIComponent(\'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><circle cx="42" cy="42" r="42" fill="#0A84FF"/></svg>\'),\n      vibrate: [200, 100, 200, 100, 400],\n      tag: \'order-ready\',\n      requireInteraction: true,\n      actions: [\n        { action: \'im-coming\', title: "I\'m on my way!" }\n      ]\n    });\n  }\n});\nself.addEventListener(\'notificationclick\', e => {\n  e.notification.close();\n  e.waitUntil(clients.openWindow(\'/\'));\n});\n';
-    const blob = new Blob([swCode], {type:'application/javascript'});
-    const url = URL.createObjectURL(blob);
-    swReg = await navigator.serviceWorker.register(url, {scope:'/'});
-  } catch(e) { console.log('SW reg failed:', e); }
-}
-
-async function askNotifPermission(){
-  const p = await Notification.requestPermission();
-  if(p === 'granted'){
-    document.getElementById('notifAsk').classList.add('hidden');
-    await registerSW();
-    // Show test notification on iOS/Android
-    if(swReg){
-      swReg.active?.postMessage({type:'SHOW_READY', body:'Notifications are on! You will be alerted when your order is ready.'});
-    }
-  }
-}
-
-// Auto-register SW on page load for users who already granted permission
-if('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted'){
-  registerSW();
-}
-
-/* Send SMS via TextBelt */
-async function sendSMS(phone, message){
-  // Clean phone number — add +44 for UK numbers
-  let num = phone.replace(/\s/g,'');
-  if(num.startsWith('07')) num = '+44'+num.slice(1);
-  else if(num.startsWith('7')) num = '+44'+num;
-  else if(!num.startsWith('+')) num = '+44'+num;
-  try{
-    await fetch('https://textbelt.com/text',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:num,message,key:'textbelt'})
-    });
-  }catch(e){console.warn('SMS error:',e);}
-}
-
-/* PDF receipt */
 function downloadPDF(){
   if(!lastOrder)return;
   const {jsPDF}=window.jspdf;
