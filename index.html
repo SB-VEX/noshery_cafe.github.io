@@ -684,7 +684,7 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
       <div class="ms">We'll have it ready for collection at The Noshery.</div>
       <div class="os" id="osSummary"></div>
       <div class="fg"><label>Your Name</label><input type="text" id="custName" placeholder="e.g. John Smith"/></div>
-      <div class="fg"><label>Phone Number</label><input type="tel" id="custPhone" placeholder="e.g. 07700 900000"/></div>
+      <div class="fg"><label>Phone Number <span style="font-size:.62rem;color:var(--g);font-weight:600;letter-spacing:.06em;">· confirmation SMS will be sent</span></label><input type="tel" id="custPhone" placeholder="e.g. 07700 900000"/></div>
       <div class="fg"><label>Pickup Time</label><select id="pickupTime"><option value="">Select a time...</option><option>As soon as possible (~20 min)</option><option>30 minutes</option><option>45 minutes</option><option>1 hour</option><option>1.5 hours</option><option>2 hours</option></select></div>
       <div class="fg"><label>Special Requests (optional)</label><input type="text" id="specialReq" placeholder="e.g. no onions..."/></div>
       <div class="mbts"><button class="btn-back" onclick="closeCheckout()">← Back</button><button class="btn-place" id="placeBtn" onclick="placeOrder()">Place order 🎉</button></div>
@@ -705,6 +705,13 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
 </div>
 
 <script>
+/* ══════════════════════════════════════
+   SMS CONFIG — get a key at textbelt.com
+   Replace PASTE_SMS_KEY_HERE with your key
+   Use 'textbelt' for 1 free test SMS
+══════════════════════════════════════ */
+const SMS_KEY = 'PASTE_SMS_KEY_HERE';
+
 const JSONBIN_ID='69d227fe856a682189ff33a6';
 const JSONBIN_KEY='$2a$10$paCwJrRtAEfmhzOujn6utOIGVHpcGZ8lrqOi4Ruk0rdnsnLoXtOOS';
 const JSONBIN_URL=`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
@@ -860,6 +867,33 @@ async function placeOrder(){
   document.getElementById('cForm').style.display='none';
   document.getElementById('cConfirm').style.display='block';
   launchConfetti();
+  sendSMS(phone,
+    'Hi '+name+'! Your Noshery order is confirmed. Ref: '+ref+'. Pickup: '+time+'. Total: £'+total.toFixed(2)+'. Address: 491A London Road, Isleworth TW7 4DA. Tel: 020 8232 8618'
+  );
+  sendOrderSMS(order);
+}
+
+/* Format UK number to E.164 */
+function formatUK(num){
+  var n=num.replace(/\D/g,'');
+  if(n.startsWith('0')) n='44'+n.slice(1);
+  if(!n.startsWith('44')) n='44'+n;
+  return '+'+n;
+}
+
+/* Send SMS via TextBelt */
+async function sendOrderSMS(order){
+  if(!SMS_KEY||SMS_KEY==='PASTE_SMS_KEY_HERE') return;
+  var msg='Hi '+order.name+'! Your Noshery order #'+order.ref+' has been received. '+
+          'Pickup: '+order.pickup+'. Total: £'+order.total.toFixed(2)+
+          '. 491A London Road, Isleworth. Call 020 8232 8618 if needed.';
+  try{
+    await fetch('https://textbelt.com/text',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({phone:formatUK(order.phone),message:msg,key:SMS_KEY})
+    });
+  }catch(e){console.warn('SMS error:',e);}
 }
 function confirmDone(){
   cart={};updateCart();lastOrder=null;
@@ -868,6 +902,22 @@ function confirmDone(){
   ['custName','custPhone','specialReq'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pickupTime').value='';
   closeCheckout();
+}
+
+/* Send SMS via TextBelt */
+async function sendSMS(phone, message){
+  // Clean phone number — add +44 for UK numbers
+  let num = phone.replace(/\s/g,'');
+  if(num.startsWith('07')) num = '+44'+num.slice(1);
+  else if(num.startsWith('7')) num = '+44'+num;
+  else if(!num.startsWith('+')) num = '+44'+num;
+  try{
+    await fetch('https://textbelt.com/text',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({phone:num,message,key:'textbelt'})
+    });
+  }catch(e){console.warn('SMS error:',e);}
 }
 
 /* PDF receipt */
@@ -910,10 +960,19 @@ function downloadPDF(){
 /* Email receipt */
 function emailReceipt(){
   if(!lastOrder)return;
-  const items=lastOrder.items.map(i=>`${i.qty||1}x ${i.name} - £${(i.price*(i.qty||1)).toFixed(2)}`).join('%0A');
-  const sub=encodeURIComponent('Your Noshery Order - '+lastOrder.ref);
-  const body=encodeURIComponent(`Order Reference: ${lastOrder.ref}\n\nThank you, ${lastOrder.name}!\nYour order is being prepared at The Noshery.\n\nPickup: ${lastOrder.pickup}\n\nYour order:\n${lastOrder.items.map(i=>`${i.qty||1}x ${i.name} - £${(i.price*(i.qty||1)).toFixed(2)}`).join('\n')}\n\nTotal: £${lastOrder.total.toFixed(2)}\n\nAddress: 491A London Road, Isleworth TW7 4DA\nPhone: 020 8232 8618\n\nThank you!`);
-  window.open('mailto:?subject='+sub+'&body='+body);
+  const lines=lastOrder.items.map(i=>(i.qty||1)+'x '+i.name+' - £'+(i.price*(i.qty||1)).toFixed(2)).join('%0A');
+  const sub='Your%20Noshery%20Order%20-%20'+lastOrder.ref;
+  const body='Order%20Reference%3A%20'+lastOrder.ref
+    +'%0A%0AThank%20you%2C%20'+encodeURIComponent(lastOrder.name)+'!'
+    +'%0AYour%20order%20is%20confirmed%20at%20The%20Noshery.'
+    +'%0A%0APickup%3A%20'+encodeURIComponent(lastOrder.pickup)
+    +'%0A%0AYour%20order%3A%0A'+lines
+    +'%0A%0ATotal%3A%20%C2%A3'+lastOrder.total.toFixed(2)
+    +'%0A%0AAddress%3A%20491A%20London%20Road%2C%20Isleworth%20TW7%204DA'
+    +'%0APhone%3A%20020%208232%208618%0A%0AThank%20you!';
+  const a=document.createElement('a');
+  a.href='mailto:?subject='+sub+'&body='+body;
+  a.click();
 }
 </script>
 <style>
