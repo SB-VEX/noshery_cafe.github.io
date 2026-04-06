@@ -473,16 +473,45 @@ document.addEventListener('click',e=>{if(!e.target.closest('.tp-wrap'))closeTp()
 const st=localStorage.getItem('n-theme');if(st)setTheme(st);
 
 /* Audio */
-function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+function initAudio(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+}
+
+/* ── Loud, attention-grabbing 3-burst alert ── */
 function playPing(){
   try{
-    initAudio();if(audioCtx.state==='suspended')audioCtx.resume();
-    [523.25,659.25,783.99,1046.50].forEach((f,i)=>{
-      const o=audioCtx.createOscillator(),g=audioCtx.createGain(),t=audioCtx.currentTime+i*.14;
-      o.connect(g);g.connect(audioCtx.destination);o.type='sine';o.frequency.setValueAtTime(f,t);
-      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.28,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+.7);
-      o.start(t);o.stop(t+.7);
+    initAudio();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+
+    const master = audioCtx.createGain();
+    master.gain.setValueAtTime(0.85, audioCtx.currentTime); // much louder
+    master.connect(audioCtx.destination);
+
+    // 3 burst pattern — like a shop door bell
+    [0, 0.38, 0.76].forEach(burst=>{
+      // Each burst: two tones together for richness
+      [[880, 'sine'], [1108, 'triangle']].forEach(([freq, type])=>{
+        const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+        const t=audioCtx.currentTime + burst;
+        o.connect(g); g.connect(master);
+        o.type=type;
+        o.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.5, t+0.02);
+        g.gain.setValueAtTime(0.5, t+0.08);
+        g.gain.exponentialRampToValueAtTime(0.001, t+0.32);
+        o.start(t); o.stop(t+0.35);
+      });
     });
+
+    // Flash the page title as extra visual cue
+    let flashes=0;
+    const orig=document.title;
+    const flashInterval=setInterval(()=>{
+      document.title = flashes%2===0 ? '🔔 NEW ORDER!' : orig;
+      if(++flashes>=8){ clearInterval(flashInterval); document.title=orig; }
+    }, 400);
+
   }catch(e){}
 }
 
