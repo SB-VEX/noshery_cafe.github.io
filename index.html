@@ -426,6 +426,40 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
 .iir-label{position:absolute;bottom:0;left:0;right:0;padding:.7rem .9rem;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);color:#fff;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:0;transform:translateY(4px);transition:all .3s;}
 .iir:hover .iir-label{opacity:1;transform:none;}
 @media(max-width:640px){.intro-highlights{gap:.7rem;}.ih{min-width:140px;}.intro-stats{flex-wrap:wrap;}.is{min-width:50%;}}
+
+/* ══ ORDER TRACKER ══ */
+.order-tracker{display:flex;flex-direction:column;gap:0;margin:1rem 0;text-align:left;}
+.ot-step{display:flex;align-items:flex-start;gap:.9rem;padding:.65rem 0;position:relative;}
+.ot-step::before{content:'';position:absolute;left:9px;top:30px;bottom:-10px;width:2px;background:var(--bd);transition:background .5s;}
+.ot-step:last-child::before{display:none;}
+.ot-step.on::before{background:var(--a);}
+.ots-dot{width:20px;height:20px;border-radius:50%;background:var(--bg3);border:2px solid var(--bd);flex-shrink:0;margin-top:2px;transition:all .4s var(--spring);display:flex;align-items:center;justify-content:center;font-size:.6rem;}
+.ot-step.on .ots-dot{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 0 0 4px rgba(10,132,255,.15);}
+.ot-step.on .ots-dot::after{content:'✓';}
+.ot-step.ready .ots-dot{background:var(--g);border-color:var(--g);box-shadow:0 0 0 6px rgba(48,209,88,.2);animation:readyPulse 1.5s ease-in-out infinite;}
+.ot-step.ready .ots-dot::after{content:'✓';}
+@keyframes readyPulse{0%,100%{box-shadow:0 0 0 4px rgba(48,209,88,.2);}50%{box-shadow:0 0 0 10px rgba(48,209,88,0);}}
+.ots-info{flex:1;}
+.ots-label{font-size:.84rem;font-weight:700;color:var(--t3);transition:color .3s;}
+.ot-step.on .ots-label{color:var(--text);}
+.ot-step.ready .ots-label{color:var(--g);}
+.ots-sub{font-size:.72rem;color:var(--t3);line-height:1.4;}
+.ot-step.active .ots-dot{background:var(--bg);border-color:var(--a);animation:dotSpin .8s linear infinite;}
+@keyframes dotSpin{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+.ot-step.active .ots-label{color:var(--a);}
+
+/* Notif ask bar */
+.notif-ask{display:flex;align-items:center;gap:.6rem;background:rgba(10,132,255,.06);border:1px solid rgba(10,132,255,.18);border-radius:12px;padding:.7rem 1rem;font-size:.78rem;color:var(--t2);margin:.8rem 0 0;}
+.notif-ask button{margin-left:auto;background:var(--a);color:#fff;border:none;border-radius:100px;padding:.3rem .85rem;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.notif-ask button:hover{background:var(--a2);}
+.notif-ask.hidden{display:none;}
+
+/* Ready notification banner */
+.ready-banner{display:none;background:linear-gradient(135deg,var(--g),#28B84A);border-radius:14px;padding:1.1rem 1.2rem;text-align:center;margin:.8rem 0;animation:scaleIn .5s var(--spring);}
+.ready-banner.show{display:block;}
+.ready-banner-icon{font-size:2rem;display:block;margin-bottom:.3rem;animation:bounce .6s var(--spring);}
+.ready-banner-title{font-size:1rem;font-weight:800;color:#fff;}
+.ready-banner-sub{font-size:.78rem;color:rgba(255,255,255,.85);margin-top:.2rem;}
 </style>
 </head>
 <body>
@@ -691,10 +725,33 @@ footer{border-top:1px solid var(--bd);padding:1.5rem clamp(1.2rem,4vw,2rem);disp
     </div>
     <div id="cConfirm" style="display:none" class="conf">
       <div class="conf-confetti" id="confetti"></div>
-      <span class="conf-e">🎉</span>
-      <div class="conf-h">Order placed!</div>
+      <span class="conf-e" id="confEmoji">🎉</span>
+      <div class="conf-h" id="confTitle">Order placed!</div>
       <div class="conf-ref" id="confRef">Order #NOS-0000</div>
-      <p class="conf-sub">Your order has been received! We'll have it ready at <strong>491A London Road, Isleworth</strong>.<br>Questions? Call <a href="tel:02082328618" style="color:var(--a)">020 8232 8618</a>.</p>
+
+      <!-- Status tracker -->
+      <div class="order-tracker" id="orderTracker">
+        <div class="ot-step on" id="step-placed">
+          <div class="ots-dot"></div>
+          <div class="ots-info"><div class="ots-label">Order received</div><div class="ots-sub">We've got your order</div></div>
+        </div>
+        <div class="ot-step" id="step-preparing">
+          <div class="ots-dot"></div>
+          <div class="ots-info"><div class="ots-label">Being prepared</div><div class="ots-sub">Kitchen is working on it</div></div>
+        </div>
+        <div class="ot-step" id="step-ready">
+          <div class="ots-dot"></div>
+          <div class="ots-info"><div class="ots-label">Ready for collection!</div><div class="ots-sub">Come pick it up 🎉</div></div>
+        </div>
+      </div>
+
+      <div class="notif-ask" id="notifAsk">
+        <span>🔔</span>
+        <span>Get notified when your order is ready?</span>
+        <button onclick="askNotifPermission()">Enable</button>
+      </div>
+
+      <p class="conf-sub" style="margin-top:.8rem">Collect from <strong>491A London Road, Isleworth</strong> · <a href="tel:02082328618" style="color:var(--a)">020 8232 8618</a></p>
       <div class="conf-btns">
         <button class="btn-receipt" onclick="downloadPDF()">⬇ Download Receipt (PDF)</button>
         <button class="btn-receipt-ghost" onclick="emailReceipt()">✉ Email yourself a copy</button>
@@ -867,6 +924,7 @@ async function placeOrder(){
   document.getElementById('cForm').style.display='none';
   document.getElementById('cConfirm').style.display='block';
   launchConfetti();
+  startOrderTracking(ref);
   sendSMS(phone,
     'Hi '+name+'! Your Noshery order is confirmed. Ref: '+ref+'. Pickup: '+time+'. Total: £'+total.toFixed(2)+'. Address: 491A London Road, Isleworth TW7 4DA. Tel: 020 8232 8618'
   );
@@ -896,12 +954,113 @@ async function sendOrderSMS(order){
   }catch(e){console.warn('SMS error:',e);}
 }
 function confirmDone(){
+  stopOrderTracking();
   cart={};updateCart();lastOrder=null;
   document.getElementById('cForm').style.display='block';
   document.getElementById('cConfirm').style.display='none';
   ['custName','custPhone','specialReq'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pickupTime').value='';
   closeCheckout();
+}
+
+/* ══ ORDER STATUS TRACKING ══ */
+let trackInterval=null, trackedRef=null, lastTrackedStatus=null;
+
+function startOrderTracking(ref){
+  trackedRef=ref;lastTrackedStatus='new';
+  // Request notification permission
+  if('Notification' in window && Notification.permission==='default'){
+    document.getElementById('notifAsk').classList.remove('hidden');
+  } else {
+    document.getElementById('notifAsk').classList.add('hidden');
+  }
+  if('Notification' in window && Notification.permission==='granted'){
+    document.getElementById('notifAsk').classList.add('hidden');
+  }
+  updateTrackerUI('new');
+  trackInterval=setInterval(pollOrderStatus,5000);
+}
+
+function stopOrderTracking(){
+  if(trackInterval){clearInterval(trackInterval);trackInterval=null;}
+  trackedRef=null;lastTrackedStatus=null;
+}
+
+async function pollOrderStatus(){
+  if(!trackedRef)return;
+  try{
+    const res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY,'X-Bin-Meta':'false'}});
+    const data=await res.json();
+    const all=Array.isArray(data)?data:(Array.isArray(data.record)?data.record:[]);
+    const order=all.find(o=>o.ref===trackedRef);
+    if(!order)return;
+    if(order.status!==lastTrackedStatus){
+      lastTrackedStatus=order.status;
+      updateTrackerUI(order.status);
+      if(order.status==='ready') onOrderReady();
+    }
+  }catch(e){}
+}
+
+function updateTrackerUI(status){
+  const stepPlaced=document.getElementById('step-placed');
+  const stepPrep=document.getElementById('step-preparing');
+  const stepReady=document.getElementById('step-ready');
+  if(!stepPlaced)return;
+
+  // Reset
+  [stepPlaced,stepPrep,stepReady].forEach(s=>{s.classList.remove('on','active','ready');});
+
+  if(status==='new'){
+    stepPlaced.classList.add('on');
+    stepPrep.classList.add('active');
+  } else if(status==='preparing'){
+    stepPlaced.classList.add('on');
+    stepPrep.classList.add('on','active');
+  } else if(status==='ready'){
+    stepPlaced.classList.add('on');
+    stepPrep.classList.add('on');
+    stepReady.classList.add('on','ready');
+  }
+}
+
+function onOrderReady(){
+  stopOrderTracking();
+  // Change modal header
+  document.getElementById('confEmoji').textContent='✅';
+  document.getElementById('confTitle').textContent='Ready for collection!';
+  document.getElementById('confTitle').style.color='var(--g)';
+  // Browser notification
+  if(Notification.permission==='granted'){
+    new Notification('Your order is ready! 🎉',{
+      body:'Come collect your order from The Noshery — 491A London Road, Isleworth.',
+      icon:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='42' cy='42' r='42' fill='%2330D158'/%3E%3Ctext x='42' y='56' text-anchor='middle' font-size='42'%3E✓%3C/text%3E%3C/svg%3E"
+    });
+  }
+  // Play a pleasant chime
+  playReadyChime();
+}
+
+function playReadyChime(){
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    [[523,0],[659,.15],[784,.3],[1047,.45],[784,.65],[1047,.8]].forEach(([f,t])=>{
+      const o=ac.createOscillator(),g=ac.createGain(),ct=ac.currentTime+t;
+      o.connect(g);g.connect(ac.destination);
+      o.type='sine';o.frequency.setValueAtTime(f,ct);
+      g.gain.setValueAtTime(0,ct);g.gain.linearRampToValueAtTime(.32,ct+.05);
+      g.gain.exponentialRampToValueAtTime(.001,ct+.5);
+      o.start(ct);o.stop(ct+.5);
+    });
+  }catch(e){}
+}
+
+function askNotifPermission(){
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){
+      document.getElementById('notifAsk').classList.add('hidden');
+    }
+  });
 }
 
 /* Send SMS via TextBelt */
